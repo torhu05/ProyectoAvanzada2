@@ -31,7 +31,6 @@ import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoIcon;
 
 import hn.uth.data.SamplePerson;
-import hn.uth.services.SamplePersonService;
 import hn.uth.views.MainLayout;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -64,14 +63,10 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     
     
 
-    private final BeanValidationBinder<SamplePerson> binder;
-
     private SamplePerson samplePerson;
 
-    private final SamplePersonService samplePersonService;
 
-    public ClienteView(SamplePersonService samplePersonService) {
-        this.samplePersonService = samplePersonService;
+    public ClienteView() {
         addClassNames("cliente-view");
 
         // Create UI
@@ -106,11 +101,9 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(SamplePerson.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
-        binder.bindInstanceFields(this);
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -122,8 +115,6 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                 if (this.samplePerson == null) {
                     this.samplePerson = new SamplePerson();
                 }
-                binder.writeBean(this.samplePerson);
-                samplePersonService.update(this.samplePerson);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -133,15 +124,19 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } catch (ValidationException validationException) {
-                Notification.show("Failed to update the data. Check again that all values are valid");
-            }
+            } 
+        });
+        
+        eliminar.addClickListener(e -> {
+        	Notification n = Notification.show("Boton eliminar seleccionado");
+        	n.setPosition(Position.MIDDLE);
+            n.addThemeVariants(NotificationVariant.LUMO_WARNING);
         });
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
+        /*Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
         if (samplePersonId.isPresent()) {
             Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
             if (samplePersonFromBackend.isPresent()) {
@@ -155,7 +150,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                 refreshGrid();
                 event.forwardTo(ClienteView.class);
             }
-        }
+        }*/
     }
 
     private void createEditorLayout(SplitLayout splitLayout) {
@@ -224,7 +219,17 @@ public class ClienteView extends Div implements BeforeEnterObserver {
 
     private void populateForm(SamplePerson value) {
         this.samplePerson = value;
-        binder.readBean(this.samplePerson);
+        if(value!=null) {
+        	identidad.setValue(value.getIdentidad());
+            nombre.setValue(value.getNombre());;
+            apellido.setValue(value.getApellido());;
+            correo.setValue(value.getCorreo());;
+            telefono.setValue(value.getTelefono());;
+            fechaCumpleaños.setValue(value.getFechaCumpleaños());;
+            sexo.setValue(value.getSexo());;
+            nacionalidad.setValue(value.getNacionalidad());;
+            lugarProcedencia.setValue(value.getLugarProcedencia());;
+        }
 
     }
 }
