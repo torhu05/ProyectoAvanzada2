@@ -4,6 +4,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -26,8 +28,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+import com.vaadin.flow.theme.lumo.LumoIcon;
+
 import hn.uth.data.SamplePerson;
-import hn.uth.services.SamplePersonService;
 import hn.uth.views.MainLayout;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -44,26 +47,26 @@ public class ClienteView extends Div implements BeforeEnterObserver {
 
     private final Grid<SamplePerson> grid = new Grid<>(SamplePerson.class, false);
 
-    private TextField firstName;
-    private TextField lastName;
-    private TextField email;
-    private TextField phone;
-    private DatePicker dateOfBirth;
-    private TextField occupation;
-    private TextField role;
-    private Checkbox important;
+    private TextField identidad;
+    private TextField nombre;
+    private TextField apellido;
+    private TextField correo;
+    private TextField telefono;
+    private DatePicker fechaCumpleaños;
+    private ComboBox<String> sexo;
+    private TextField nacionalidad;
+    private TextField lugarProcedencia;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
-
-    private final BeanValidationBinder<SamplePerson> binder;
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar", new Icon(VaadinIcon.CHECK_CIRCLE));
+    private final Button eliminar = new Button("Eliminar", new Icon(VaadinIcon.CLOSE_CIRCLE));
+    
+    
 
     private SamplePerson samplePerson;
 
-    private final SamplePersonService samplePersonService;
 
-    public ClienteView(SamplePersonService samplePersonService) {
-        this.samplePersonService = samplePersonService;
+    public ClienteView() {
         addClassNames("cliente-view");
 
         // Create UI
@@ -75,25 +78,16 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("firstName").setAutoWidth(true);
-        grid.addColumn("lastName").setAutoWidth(true);
-        grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("phone").setAutoWidth(true);
-        grid.addColumn("dateOfBirth").setAutoWidth(true);
-        grid.addColumn("occupation").setAutoWidth(true);
-        grid.addColumn("role").setAutoWidth(true);
-        LitRenderer<SamplePerson> importantRenderer = LitRenderer.<SamplePerson>of(
-                "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
-                .withProperty("icon", important -> important.isImportant() ? "check" : "minus").withProperty("color",
-                        important -> important.isImportant()
-                                ? "var(--lumo-primary-text-color)"
-                                : "var(--lumo-disabled-text-color)");
-
-        grid.addColumn(importantRenderer).setHeader("Important").setAutoWidth(true);
-
-        grid.setItems(query -> samplePersonService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());
+        grid.addColumn("identidad").setAutoWidth(true);
+        grid.addColumn("nombre").setAutoWidth(true);
+        grid.addColumn("apellido").setAutoWidth(true);
+        grid.addColumn("correo").setAutoWidth(true);
+        grid.addColumn("telefono").setAutoWidth(true);
+        grid.addColumn("fechaCumpleaños").setAutoWidth(true);
+        grid.addColumn("sexo").setAutoWidth(true);
+        grid.addColumn("nacionalidad").setAutoWidth(true);
+        grid.addColumn("lugarProcedencia").setAutoWidth(true);
+        
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -107,11 +101,9 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(SamplePerson.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
-        binder.bindInstanceFields(this);
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -123,8 +115,6 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                 if (this.samplePerson == null) {
                     this.samplePerson = new SamplePerson();
                 }
-                binder.writeBean(this.samplePerson);
-                samplePersonService.update(this.samplePerson);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -134,15 +124,19 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } catch (ValidationException validationException) {
-                Notification.show("Failed to update the data. Check again that all values are valid");
-            }
+            } 
+        });
+        
+        eliminar.addClickListener(e -> {
+        	Notification n = Notification.show("Boton eliminar seleccionado");
+        	n.setPosition(Position.MIDDLE);
+            n.addThemeVariants(NotificationVariant.LUMO_WARNING);
         });
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
+        /*Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
         if (samplePersonId.isPresent()) {
             Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
             if (samplePersonFromBackend.isPresent()) {
@@ -156,7 +150,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                 refreshGrid();
                 event.forwardTo(ClienteView.class);
             }
-        }
+        }*/
     }
 
     private void createEditorLayout(SplitLayout splitLayout) {
@@ -168,15 +162,27 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        firstName = new TextField("First Name");
-        lastName = new TextField("Last Name");
-        email = new TextField("Email");
-        phone = new TextField("Phone");
-        dateOfBirth = new DatePicker("Date Of Birth");
-        occupation = new TextField("Occupation");
-        role = new TextField("Role");
-        important = new Checkbox("Important");
-        formLayout.add(firstName, lastName, email, phone, dateOfBirth, occupation, role, important);
+        identidad = new TextField("identidad");
+        identidad.setPrefixComponent(VaadinIcon.USER_CHECK.create());        
+        nombre = new TextField("nombre");
+        nombre.setPrefixComponent(VaadinIcon.USER_CARD.create());
+        apellido = new TextField("Apellido");
+        apellido.setPrefixComponent(VaadinIcon.USER_CARD.create());
+        correo = new TextField("Correo");
+        correo.setPrefixComponent(VaadinIcon.AT.create());
+        telefono = new TextField("Telefono");
+        telefono.setPrefixComponent(VaadinIcon.PHONE.create());
+        fechaCumpleaños = new DatePicker("Fecha Cumpleaños");
+        fechaCumpleaños.setPrefixComponent(VaadinIcon.DATE_INPUT.create());
+        sexo = new ComboBox<>("Sexo");
+        sexo.setPrefixComponent(VaadinIcon.FAMILY.create());
+        sexo.setAllowCustomValue(true);
+        
+        nacionalidad = new TextField("Nacionalidad");
+        nacionalidad.setPrefixComponent(VaadinIcon.MAP_MARKER.create());
+        lugarProcedencia = new TextField("Lugar de Procedencia");
+        lugarProcedencia.setPrefixComponent(VaadinIcon.AIRPLANE.create());
+        formLayout.add(identidad, nombre, apellido, correo, telefono, fechaCumpleaños, sexo, nacionalidad, lugarProcedencia);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -189,7 +195,9 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         buttonLayout.setClassName("button-layout");
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        eliminar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+        
+        buttonLayout.add(save, eliminar, cancel);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -211,7 +219,17 @@ public class ClienteView extends Div implements BeforeEnterObserver {
 
     private void populateForm(SamplePerson value) {
         this.samplePerson = value;
-        binder.readBean(this.samplePerson);
+        if(value!=null) {
+        	identidad.setValue(value.getIdentidad());
+            nombre.setValue(value.getNombre());;
+            apellido.setValue(value.getApellido());;
+            correo.setValue(value.getCorreo());;
+            telefono.setValue(value.getTelefono());;
+            fechaCumpleaños.setValue(value.getFechaCumpleaños());;
+            sexo.setValue(value.getSexo());;
+            nacionalidad.setValue(value.getNacionalidad());;
+            lugarProcedencia.setValue(value.getLugarProcedencia());;
+        }
 
     }
 }

@@ -23,7 +23,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import hn.uth.data.SampleAddress;
-import hn.uth.services.SampleAddressService;
 import hn.uth.views.MainLayout;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -50,14 +49,12 @@ public class ReservaView extends Div implements BeforeEnterObserver {
     private final Button save = new Button("Guardar");
     private final Button eliminar = new Button("Eliminar");
 
-    private final BeanValidationBinder<SampleAddress> binder;
 
     private SampleAddress sampleAddress;
 
-    private final SampleAddressService sampleAddressService;
+    
 
-    public ReservaView(SampleAddressService sampleAddressService) {
-        this.sampleAddressService = sampleAddressService;
+    public ReservaView() {
         addClassNames("reserva-view");
 
         // Create UI
@@ -69,12 +66,21 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
+
         grid.addColumn("ticket").setAutoWidth(true);
         grid.addColumn("precioTotal").setAutoWidth(true);
         grid.addColumn("idHabitacion").setAutoWidth(true);
         grid.addColumn("idCliente").setAutoWidth(true);
         grid.addColumn("fecInicio").setAutoWidth(true);
         grid.addColumn("fecFinal").setAutoWidth(true);
+
+        grid.addColumn("street").setAutoWidth(true);
+        grid.addColumn("postalCode").setAutoWidth(true);
+        grid.addColumn("city").setAutoWidth(true);
+        grid.addColumn("state").setAutoWidth(true);
+        grid.addColumn("country").setAutoWidth(true);
+        
+
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -87,12 +93,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
             }
         });
 
-        // Configure Form
-        binder = new BeanValidationBinder<>(SampleAddress.class);
-
-        // Bind fields. This is where you'd define e.g. validation rules
-
-        binder.bindInstanceFields(this);
+        
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -104,7 +105,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
                 if (this.sampleAddress == null) {
                     this.sampleAddress = new SampleAddress();
                 }
-                
+
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -120,7 +121,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<Long> sampleAddressId = event.getRouteParameters().get(SAMPLEADDRESS_ID).map(Long::parseLong);
+        /*Optional<Long> sampleAddressId = event.getRouteParameters().get(SAMPLEADDRESS_ID).map(Long::parseLong);
         if (sampleAddressId.isPresent()) {
             Optional<SampleAddress> sampleAddressFromBackend = sampleAddressService.get(sampleAddressId.get());
             if (sampleAddressFromBackend.isPresent()) {
@@ -134,7 +135,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
                 refreshGrid();
                 event.forwardTo(ReservaView.class);
             }
-        }
+        }*/
     }
 
     private void createEditorLayout(SplitLayout splitLayout) {
@@ -194,7 +195,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
 
     private void populateForm(SampleAddress value) {
         this.sampleAddress = value;
-        
+
 
     }
 }
