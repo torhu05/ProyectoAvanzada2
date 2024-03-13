@@ -3,6 +3,7 @@ package hn.uth.views.habitacion;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -10,6 +11,8 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.NativeLabel;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -45,16 +48,16 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
 
     private final Grid<SampleBook> grid = new Grid<>(SampleBook.class, false);
 
-    private Upload image;
-    private Image imagePreview;
-    private TextField name;
-    private TextField author;
-    private DatePicker publicationDate;
-    private TextField pages;
-    private TextField isbn;
+    private TextField numerohabitacion;
+    private ComboBox<String> ocupacion;
+    private ComboBox<String> precio;
+    private ComboBox<String> tipohabitacion;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
+
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar",new Icon(VaadinIcon.CHECK_CIRCLE));
+    private final Button delete = new Button("Eliminar",new Icon(VaadinIcon.CLOSE_CIRCLE));
+    
 
 
     private SampleBook sampleBook;
@@ -71,22 +74,11 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
 
         add(splitLayout);
 
-        // Configure Grid
-        LitRenderer<SampleBook> imageRenderer = LitRenderer
-                .<SampleBook>of("<img style='height: 64px' src=${item.image} />").withProperty("image", item -> {
-                    if (item != null && item.getImage() != null) {
-                        return "data:image;base64," + Base64.getEncoder().encodeToString(item.getImage());
-                    } else {
-                        return "";
-                    }
-                });
-        grid.addColumn(imageRenderer).setHeader("Image").setWidth("68px").setFlexGrow(0);
+        grid.addColumn("numerohabitacion").setAutoWidth(true);
+        grid.addColumn("ocupacion").setAutoWidth(true);
+        grid.addColumn("precio").setAutoWidth(true);
+        grid.addColumn("tipohabitacion").setAutoWidth(true);
 
-        grid.addColumn("name").setAutoWidth(true);
-        grid.addColumn("author").setAutoWidth(true);
-        grid.addColumn("publicationDate").setAutoWidth(true);
-        grid.addColumn("pages").setAutoWidth(true);
-        grid.addColumn("isbn").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -98,10 +90,6 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(HabitacionView.class);
             }
         });
-
-        
-
-        attachImageUpload(image, imagePreview);
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -153,18 +141,21 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        NativeLabel imageLabel = new NativeLabel("Image");
-        imagePreview = new Image();
-        imagePreview.setWidth("100%");
-        image = new Upload();
-        image.getStyle().set("box-sizing", "border-box");
-        image.getElement().appendChild(imagePreview.getElement());
-        name = new TextField("Name");
-        author = new TextField("Author");
-        publicationDate = new DatePicker("Publication Date");
-        pages = new TextField("Pages");
-        isbn = new TextField("Isbn");
-        formLayout.add(imageLabel, image, name, author, publicationDate, pages, isbn);
+        numerohabitacion = new TextField("Numero habitacion");
+        numerohabitacion.setPrefixComponent(VaadinIcon.TICKET.create());
+        ocupacion = new ComboBox("Ocupacion");
+        ocupacion.setItems("Cama 1","Cama 2","Cama 3");
+        ocupacion.setPrefixComponent(VaadinIcon.BED.create());
+        precio = new ComboBox("Precio");	
+        precio.setItems("L.2,300.00","L.3,100.00","L.4,200.00");
+        precio.setPrefixComponent(VaadinIcon.MONEY.create());
+        tipohabitacion = new ComboBox("Tipo Habitacion");
+        tipohabitacion.setItems("Individual","Doble","Triple");
+        tipohabitacion.setPrefixComponent(VaadinIcon.STORAGE.create());
+        
+        formLayout.add(numerohabitacion,ocupacion,precio,tipohabitacion);
+
+
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -175,9 +166,11 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
     private void createButtonLayout(Div editorLayoutDiv) {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.setClassName("button-layout");
-        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);	
+        buttonLayout.add(save,delete,cancel);
+
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -203,7 +196,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
             if (this.sampleBook == null) {
                 this.sampleBook = new SampleBook();
             }
-            this.sampleBook.setImage(uploadBuffer.toByteArray());
+          //  this.sampleBook.setImage(uploadBuffer.toByteArray());
         });
         preview.setVisible(false);
     }
@@ -219,13 +212,9 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
 
     private void populateForm(SampleBook value) {
         this.sampleBook = value;
-        this.imagePreview.setVisible(value != null);
-        if (value == null || value.getImage() == null) {
-            this.image.clearFileList();
-            this.imagePreview.setSrc("");
-        } else {
-            this.imagePreview.setSrc("data:image;base64," + Base64.getEncoder().encodeToString(value.getImage()));
+       
         }
 
     }
-}
+
+
