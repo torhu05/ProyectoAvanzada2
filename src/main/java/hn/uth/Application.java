@@ -27,6 +27,7 @@ public class Application implements AppShellConfigurator {
         SpringApplication.run(Application.class, args);
     }
 
+
   /*  @Bean
     SqlDataSourceScriptDatabaseInitializer dataSourceScriptDatabaseInitializer(DataSource dataSource,
             SqlInitializationProperties properties, SamplePersonRepository repository) {
@@ -41,4 +42,6 @@ public class Application implements AppShellConfigurator {
             } 
         };
     }*/
+
+
 }

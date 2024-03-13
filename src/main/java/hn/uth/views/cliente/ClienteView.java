@@ -63,6 +63,11 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     
     private SamplePerson ClienteSeleccionado;
 
+
+    private SamplePerson samplePerson;
+
+
+
     public ClienteView() {
         addClassNames("cliente-view");
 
@@ -97,7 +102,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
             }
         });
 
-   
+
         cancel.addClickListener(e -> {
             clearForm();
             refreshGrid();
@@ -108,7 +113,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                 if (this.ClienteSeleccionado == null) {
                     this.ClienteSeleccionado = new SamplePerson();
                 }
-               
+
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -118,8 +123,18 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+
            
-            }
+            
+
+            } 
+        });
+        
+        eliminar.addClickListener(e -> {
+        	Notification n = Notification.show("Boton eliminar seleccionado");
+        	n.setPosition(Position.MIDDLE);
+            n.addThemeVariants(NotificationVariant.LUMO_WARNING);
+
         });
        eliminar.addClickListener ( e-> {
        Notification n = Notification.show( "Botor eliminar seleccionado, aun no hay nada que eliminar");
@@ -129,7 +144,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     } 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
+        /*Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
         if (samplePersonId.isPresent()) {
            /* Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
             if (samplePersonFromBackend.isPresent()) {
@@ -142,8 +157,11 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                 // refresh grid
                 refreshGrid();
                 event.forwardTo(ClienteView.class);
+
             }*/
-        }
+             
+       
+
     }
 
     private void createEditorLayout(SplitLayout splitLayout) {
@@ -211,6 +229,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     }
 
     private void populateForm(SamplePerson value) {
+
         this.ClienteSeleccionado = value;
        if(value != null) {
     	   identidad.setValue(value.getIdentidad());
@@ -223,5 +242,20 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     	   nacionalidad.setValue(value.getNacionalidad());
     	   lugarProcedencia.setValue(value.getLugarProcedencia());   
        }     
+
+        this.samplePerson = value;
+        if(value!=null) {
+        	identidad.setValue(value.getIdentidad());
+            nombre.setValue(value.getNombre());;
+            apellido.setValue(value.getApellido());;
+            correo.setValue(value.getCorreo());;
+            telefono.setValue(value.getTelefono());;
+            fechaCumpleaños.setValue(value.getFechaCumpleaños());;
+            sexo.setValue(value.getSexo());;
+            nacionalidad.setValue(value.getNacionalidad());;
+            lugarProcedencia.setValue(value.getLugarProcedencia());;
+        }
+
+
     }
 }
