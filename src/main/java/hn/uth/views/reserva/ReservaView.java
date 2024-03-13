@@ -73,12 +73,6 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         grid.addColumn("idCliente").setAutoWidth(true);
         grid.addColumn("fecInicio").setAutoWidth(true);
         grid.addColumn("fecFinal").setAutoWidth(true);
-
-        grid.addColumn("street").setAutoWidth(true);
-        grid.addColumn("postalCode").setAutoWidth(true);
-        grid.addColumn("city").setAutoWidth(true);
-        grid.addColumn("state").setAutoWidth(true);
-        grid.addColumn("country").setAutoWidth(true);
         
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
