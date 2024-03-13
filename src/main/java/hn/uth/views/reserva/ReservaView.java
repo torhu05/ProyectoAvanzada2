@@ -177,10 +177,12 @@ public class ReservaView extends Div implements BeforeEnterObserver {
     private void createButtonLayout(Div editorLayoutDiv) {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.setClassName("button-layout");
-        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         eliminar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
-        buttonLayout.add(save, cancel, eliminar);
+        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        
+        
+        buttonLayout.add(save, eliminar, cancel);
         editorLayoutDiv.add(buttonLayout);
     }
 
