@@ -3,10 +3,12 @@ package hn.uth.views.reserva;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -35,14 +37,17 @@ public class ReservaView extends Div implements BeforeEnterObserver {
 
     private final Grid<SampleAddress> grid = new Grid<>(SampleAddress.class, false);
 
-    private TextField street;
-    private TextField postalCode;
-    private TextField city;
-    private TextField state;
-    private TextField country;
+    private TextField ticket;
+    private TextField precioTotal;
+    private TextField idHabitacion;
+    private TextField idCliente;
+    private DatePicker fecInicio;
+    private DatePicker fecFinal;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
+    
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar");
+    private final Button eliminar = new Button("Eliminar");
 
 
     private SampleAddress sampleAddress;
@@ -61,12 +66,21 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
+
+        grid.addColumn("ticket").setAutoWidth(true);
+        grid.addColumn("precioTotal").setAutoWidth(true);
+        grid.addColumn("idHabitacion").setAutoWidth(true);
+        grid.addColumn("idCliente").setAutoWidth(true);
+        grid.addColumn("fecInicio").setAutoWidth(true);
+        grid.addColumn("fecFinal").setAutoWidth(true);
+
         grid.addColumn("street").setAutoWidth(true);
         grid.addColumn("postalCode").setAutoWidth(true);
         grid.addColumn("city").setAutoWidth(true);
         grid.addColumn("state").setAutoWidth(true);
         grid.addColumn("country").setAutoWidth(true);
         
+
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -91,6 +105,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
                 if (this.sampleAddress == null) {
                     this.sampleAddress = new SampleAddress();
                 }
+
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -132,12 +147,19 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        street = new TextField("Street");
-        postalCode = new TextField("Postal Code");
-        city = new TextField("City");
-        state = new TextField("State");
-        country = new TextField("Country");
-        formLayout.add(street, postalCode, city, state, country);
+        ticket = new TextField("ticket");
+        ticket.setPrefixComponent(VaadinIcon.TICKET.create());
+        precioTotal = new TextField("precio total");
+        precioTotal.setPrefixComponent(VaadinIcon.MONEY.create());
+        idHabitacion = new TextField("id habitacion");
+        idHabitacion.setPrefixComponent(VaadinIcon.HOME.create());
+        idCliente = new TextField("id Cliente");
+        idCliente.setPrefixComponent(VaadinIcon.USERS.create());
+        fecInicio = new DatePicker("fecha inicio");
+        fecInicio.setPrefixComponent(VaadinIcon.CALENDAR.create());
+        fecFinal = new DatePicker("fecha final");
+        fecFinal.setPrefixComponent(VaadinIcon.CALENDAR.create());
+        formLayout.add(ticket, precioTotal, idHabitacion, idCliente, fecInicio, fecFinal);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -150,7 +172,8 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         buttonLayout.setClassName("button-layout");
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        eliminar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+        buttonLayout.add(save, cancel, eliminar);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -172,6 +195,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
 
     private void populateForm(SampleAddress value) {
         this.sampleAddress = value;
+
 
     }
 }
