@@ -30,9 +30,18 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoIcon;
 
+import hn.uth.controller.InteractorCliente;
+import hn.uth.controller.InteractorImplCliente;
 import hn.uth.data.SamplePerson;
 import hn.uth.views.MainLayout;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+
+import javax.swing.JOptionPane;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
@@ -40,7 +49,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 @Route(value = "Cliente/:samplePersonID?/:action?(edit)", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 @Uses(Icon.class)
-public class ClienteView extends Div implements BeforeEnterObserver {
+public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCliente {
 
     private final String SAMPLEPERSON_ID = "samplePersonID";
     private final String SAMPLEPERSON_EDIT_ROUTE_TEMPLATE = "Cliente/%s/edit";
@@ -52,7 +61,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     private TextField apellido;
     private TextField correo;
     private TextField telefono;
-    private DatePicker fechaCumpleaños;
+    private DatePicker fechacumpleanos;
     private ComboBox<String> sexo;
     private TextField nacionalidad;
     private TextField lugarProcedencia;
@@ -62,7 +71,8 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     private final Button eliminar = new Button("Eliminar", new Icon(VaadinIcon.CLOSE_CIRCLE));
     
     private SamplePerson ClienteSeleccionado;
-
+    private List<SamplePerson> elementos;
+    private InteractorCliente controlador;
 
     private SamplePerson samplePerson;
 
@@ -70,7 +80,11 @@ public class ClienteView extends Div implements BeforeEnterObserver {
 
     public ClienteView() {
         addClassNames("cliente-view");
+        
+        controlador = new InteractorImplCliente(this);
+        elementos = new ArrayList<>();
 
+        
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
@@ -101,6 +115,8 @@ public class ClienteView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(ClienteView.class);
             }
         });
+        
+        controlador.consultarCliente();
 
 
         cancel.addClickListener(e -> {
@@ -183,17 +199,18 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         correo.setPrefixComponent(VaadinIcon.AT.create());
         telefono = new TextField("Telefono");
         telefono.setPrefixComponent(VaadinIcon.PHONE.create());
-        fechaCumpleaños = new DatePicker("Fecha Cumpleaños");
-        fechaCumpleaños.setPrefixComponent(VaadinIcon.DATE_INPUT.create());
+        fechacumpleanos = new DatePicker("Fecha Cumpleaños");
+        fechacumpleanos.setPrefixComponent(VaadinIcon.DATE_INPUT.create());
         sexo = new ComboBox<>("Sexo");
         sexo.setPrefixComponent(VaadinIcon.FAMILY.create());
         sexo.setAllowCustomValue(true);
+        sexo.setItems("Femenino","Masculino");
         
         nacionalidad = new TextField("Nacionalidad");
         nacionalidad.setPrefixComponent(VaadinIcon.MAP_MARKER.create());
         lugarProcedencia = new TextField("Lugar de Procedencia");
         lugarProcedencia.setPrefixComponent(VaadinIcon.AIRPLANE.create());
-        formLayout.add(identidad, nombre, apellido, correo, telefono, fechaCumpleaños, sexo, nacionalidad, lugarProcedencia);
+        formLayout.add(identidad, nombre, apellido, correo, telefono, fechacumpleanos, sexo, nacionalidad, lugarProcedencia);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -229,7 +246,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     }
 
     private void populateForm(SamplePerson value) {
-
+/*
         this.ClienteSeleccionado = value;
        if(value != null) {
     	   identidad.setValue(value.getIdentidad());
@@ -254,8 +271,19 @@ public class ClienteView extends Div implements BeforeEnterObserver {
             sexo.setValue(value.getSexo());;
             nacionalidad.setValue(value.getNacionalidad());;
             lugarProcedencia.setValue(value.getLugarProcedencia());;
-        }
+        }*/
 
 
     }
+	@Override
+	public void mostrarClientesEnGrid(List<SamplePerson> items) {
+		Collection<SamplePerson> itemsCollection = items;
+		grid.setItems(itemsCollection);
+		this.elementos = items;
+	}
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+		Notification.show(mensaje);	
+		
+	}
 }

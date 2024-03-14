@@ -1,21 +1,24 @@
 package hn.uth.data;
 
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Email;
+
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 @Entity
 public class SamplePerson extends AbstractEntity {
-
+	
 	private String identidad;
     private String nombre;
     private String apellido;
     private String correo;
     private String telefono;
-    private LocalDate fechaCumpleaños;
+    private String fechacumpleanos;
     private String sexo;
     private String nacionalidad;
-    private String lugarProcedencia;
+    private String lugarprocedencia;
   		
 	
     public String getNombre() {
@@ -42,11 +45,11 @@ public class SamplePerson extends AbstractEntity {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	public LocalDate getFechaCumpleaños() {
-		return fechaCumpleaños;
+	public String getFechaCumpleaños() {
+		return fechacumpleanos;
 	}
-	public void setFechaCumpleaños(LocalDate fechaCumpleaños) {
-		this.fechaCumpleaños = fechaCumpleaños;
+	public void setFechaCumpleaños(String fechaCumpleaños) {
+		this.fechacumpleanos = fechaCumpleaños;
 	}
 	    
 	public String getIdentidad() {
@@ -68,10 +71,10 @@ public class SamplePerson extends AbstractEntity {
 		this.nacionalidad = nacionalidad;
 	}
 	public String getLugarProcedencia() {
-		return lugarProcedencia;
+		return lugarprocedencia;
 	}
 	public void setLugarProcedencia(String lugarProcedencia) {
-		this.lugarProcedencia = lugarProcedencia;
+		this.lugarprocedencia = lugarProcedencia;
 	}
 	
 }

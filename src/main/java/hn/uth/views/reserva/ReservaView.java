@@ -22,18 +22,25 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+
+import hn.uth.controller.InteractorCliente;
+import hn.uth.controller.InteractorImplCliente;
+import hn.uth.controller.InteractorImplReserva;
+import hn.uth.controller.InteractorReserva;
 import hn.uth.data.SampleAddress;
-
-
-
+import hn.uth.data.SamplePerson;
 import hn.uth.views.MainLayout;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Reserva")
 @Route(value = "Reserva/:sampleAddressID?/:action?(edit)", layout = MainLayout.class)
-public class ReservaView extends Div implements BeforeEnterObserver {
+public class ReservaView extends Div implements BeforeEnterObserver, ViewModelReserva {
 
     private final String SAMPLEADDRESS_ID = "sampleAddressID";
     private final String SAMPLEADDRESS_EDIT_ROUTE_TEMPLATE = "Reserva/%s/edit";
@@ -44,8 +51,8 @@ public class ReservaView extends Div implements BeforeEnterObserver {
     private TextField precioTotal;
     private TextField idHabitacion;
     private TextField idCliente;
-    private DatePicker fecInicio;
-    private DatePicker fecFinal;
+    private DatePicker fechaInicio;
+    private DatePicker fechaFinal;
 
     
     private final Button cancel = new Button("Cancelar");
@@ -55,12 +62,18 @@ public class ReservaView extends Div implements BeforeEnterObserver {
 
     private SampleAddress sampleAddress;
 
+
+    private List<SampleAddress> elementos;
+    private InteractorReserva controlador;
   
 
 
     public ReservaView() {
 
         addClassNames("reserva-view");
+        
+        controlador = new InteractorImplReserva(this);
+        elementos = new ArrayList<>();
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
@@ -73,11 +86,11 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         // Configure Grid
 
         grid.addColumn("ticket").setAutoWidth(true);
-        grid.addColumn("precioTotal").setAutoWidth(true);
-        grid.addColumn("idHabitacion").setAutoWidth(true);
-        grid.addColumn("idCliente").setAutoWidth(true);
-        grid.addColumn("fecInicio").setAutoWidth(true);
-        grid.addColumn("fecFinal").setAutoWidth(true);
+        grid.addColumn("preciototal").setAutoWidth(true);
+        grid.addColumn("idhabitacion").setAutoWidth(true);
+        grid.addColumn("idcliente").setAutoWidth(true);
+        grid.addColumn("fechainicio").setAutoWidth(true);
+        grid.addColumn("fechafinal").setAutoWidth(true);
         
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -94,6 +107,7 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         });
 
 
+        controlador.consultarReserva();
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -162,11 +176,11 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         idHabitacion.setPrefixComponent(VaadinIcon.HOME.create());
         idCliente = new TextField("id Cliente");
         idCliente.setPrefixComponent(VaadinIcon.USERS.create());
-        fecInicio = new DatePicker("fecha inicio");
-        fecInicio.setPrefixComponent(VaadinIcon.CALENDAR.create());
-        fecFinal = new DatePicker("fecha final");
-        fecFinal.setPrefixComponent(VaadinIcon.CALENDAR.create());
-        formLayout.add(ticket, precioTotal, idHabitacion, idCliente, fecInicio, fecFinal);
+        fechaInicio = new DatePicker("fecha inicio");
+        fechaInicio.setPrefixComponent(VaadinIcon.CALENDAR.create());
+        fechaFinal = new DatePicker("fecha final");
+        fechaFinal.setPrefixComponent(VaadinIcon.CALENDAR.create());
+        formLayout.add(ticket, precioTotal, idHabitacion, idCliente, fechaInicio, fechaFinal);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -206,4 +220,22 @@ public class ReservaView extends Div implements BeforeEnterObserver {
         this.sampleAddress = value;
 
     }
+
+
+	@Override
+	public void mostrarReservaEnGrid(List<SampleAddress> items) {
+		// TODO Auto-generated method stub
+		
+		Collection<SampleAddress> itemsCollection = items;
+		grid.setItems(itemsCollection);
+		this.elementos = items;
+		
+	}
+
+
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+		// TODO Auto-generated method stub
+		
+	}
 }

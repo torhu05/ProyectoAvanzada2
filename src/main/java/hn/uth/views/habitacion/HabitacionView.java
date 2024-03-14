@@ -30,18 +30,27 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+
+import hn.uth.controller.InteractorHabitacion;
+import hn.uth.controller.InteractorImplHabitacion;
+import hn.uth.controller.InteractorImplReserva;
+import hn.uth.controller.InteractorReserva;
+import hn.uth.data.SampleAddress;
 import hn.uth.data.SampleBook;
 import hn.uth.views.MainLayout;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Habitacion")
 @Route(value = "Habitacion/:sampleBookID?/:action?(edit)", layout = MainLayout.class)
-public class HabitacionView extends Div implements BeforeEnterObserver {
+public class HabitacionView extends Div implements BeforeEnterObserver, ViewModelHabitacion {
 
     private final String SAMPLEBOOK_ID = "sampleBookID";
     private final String SAMPLEBOOK_EDIT_ROUTE_TEMPLATE = "Habitacion/%s/edit";
@@ -61,11 +70,17 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
 
 
     private SampleBook sampleBook;
+    
+    private List<SampleBook> elementos;
+    private InteractorHabitacion controlador;
 
 
     public HabitacionView() {
         addClassNames("habitacion-view");
 
+        
+        controlador = new InteractorImplHabitacion(this);
+        elementos = new ArrayList<>();
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
@@ -90,6 +105,8 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(HabitacionView.class);
             }
         });
+        
+        controlador.consultarHabitacion();
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -214,6 +231,21 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
         this.sampleBook = value;
        
         }
+
+	@Override
+	public void mostrarHabitacionEnGrid(List<SampleBook> items) {
+		// TODO Auto-generated method stub
+		Collection<SampleBook> itemsCollection = items;
+		grid.setItems(itemsCollection);
+		this.elementos = items;
+		
+	}
+
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+		// TODO Auto-generated method stub
+		
+	}
 
     }
 

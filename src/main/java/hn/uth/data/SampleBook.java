@@ -13,8 +13,9 @@ public class SampleBook extends AbstractEntity {
 
     private String numerohabitacion;
     private String ocupacion; 
-    private String precio;
+    private double precio;
     private String tipohabitacion;
+    
     
 	public String getNumerohabitacion() {
 		return numerohabitacion;
@@ -28,10 +29,12 @@ public class SampleBook extends AbstractEntity {
 	public void setOcupacion(String ocupacion) {
 		this.ocupacion = ocupacion;
 	}
-	public String getPrecio() {
+
+
+	public double getPrecio() {
 		return precio;
 	}
-	public void setPrecio(String precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
 	public String getTipohabitacion() {
