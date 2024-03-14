@@ -28,12 +28,16 @@ import hn.uth.controller.InteractorImplCliente;
 import hn.uth.controller.InteractorImplReserva;
 import hn.uth.controller.InteractorReserva;
 import hn.uth.data.SampleAddress;
+import hn.uth.data.SampleBook;
 import hn.uth.data.SamplePerson;
 import hn.uth.views.MainLayout;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -99,7 +103,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(SAMPLEADDRESS_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+                UI.getCurrent().navigate(String.format(SAMPLEADDRESS_EDIT_ROUTE_TEMPLATE, event.getValue().getTicket()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(ReservaView.class);
@@ -140,26 +144,41 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        /*Optional<Long> sampleAddressId = event.getRouteParameters().get(SAMPLEADDRESS_ID).map(Long::parseLong);
+        Optional<String> sampleAddressId = event.getRouteParameters().get(SAMPLEADDRESS_ID);
         if (sampleAddressId.isPresent()) {
-        	/* Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
-            if (samplePersonFromBackend.isPresent()) {
-                populateForm(samplePersonFromBackend.get());
+        	SampleAddress reservaObtenida = obtenerReserva(sampleAddressId.get());
+            if (reservaObtenida != null) {
+                populateForm(reservaObtenida);
             } else {
                 Notification.show(
-                        String.format("The requested samplePerson was not found, ID = %s", samplePersonId.get()), 3000,
+                        String.format("Reserva con ticket %s no existe", sampleAddressId.get()), 3000,
                         Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
 
-                event.forwardTo(ClienteView.class);
-            }*/
+                event.forwardTo(ReservaView.class);
+            }
+        }
         }
 
     
 
-    private void createEditorLayout(SplitLayout splitLayout) {
+    private SampleAddress obtenerReserva(String ticket) {
+		// TODO Auto-generated method stub
+    
+    	SampleAddress encontrado = null;
+    	for(SampleAddress res: elementos) {
+    		if(res.getTicket().equals(ticket)) {
+    			encontrado = res;
+    			break;
+    		}
+    	}
+		return encontrado;
+	}
+
+
+	private void createEditorLayout(SplitLayout splitLayout) {
         Div editorLayoutDiv = new Div();
         editorLayoutDiv.setClassName("editor-layout");
 
@@ -219,6 +238,13 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
     private void populateForm(SampleAddress value) {
         this.sampleAddress = value;
 
+        if(value != null) {
+        	ticket.setValue(value.getTicket());
+        	precioTotal.setValue(Double.toString(value.getPreciototal()));
+        	idHabitacion.setValue(value.getIdhabitacion());
+        	idCliente.setValue(value.getIdcliente());        	
+        	
+        }
     }
 
 

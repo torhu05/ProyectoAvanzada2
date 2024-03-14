@@ -32,6 +32,7 @@ import com.vaadin.flow.theme.lumo.LumoIcon;
 
 import hn.uth.controller.InteractorCliente;
 import hn.uth.controller.InteractorImplCliente;
+import hn.uth.data.SampleAddress;
 import hn.uth.data.SamplePerson;
 import hn.uth.views.MainLayout;
 
@@ -109,7 +110,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(SAMPLEPERSON_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+                UI.getCurrent().navigate(String.format(SAMPLEPERSON_EDIT_ROUTE_TEMPLATE, event.getValue().getIdentidad()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(ClienteView.class);
@@ -160,27 +161,38 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     } 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        /*Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
+        Optional<String> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID);
         if (samplePersonId.isPresent()) {
-           /* Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
-            if (samplePersonFromBackend.isPresent()) {
-                populateForm(samplePersonFromBackend.get());
+        	SamplePerson ClienteObtenido = obtenerCliente(samplePersonId.get());
+            if (ClienteObtenido!=null) {
+                populateForm(ClienteObtenido);
             } else {
                 Notification.show(
-                        String.format("The requested samplePerson was not found, ID = %s", samplePersonId.get()), 3000,
+                        String.format("Cliente con identidad %s no existe", samplePersonId.get()), 3000,
                         Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
                 event.forwardTo(ClienteView.class);
 
-            }*/
-             
+            }
+        }
        
 
     }
 
-    private void createEditorLayout(SplitLayout splitLayout) {
+    private SamplePerson obtenerCliente(String identidad) {
+		// TODO Auto-generated method stub
+    	SamplePerson encontrado = null;
+    	for(SamplePerson res: elementos) {
+    		if(res.getIdentidad().equals(identidad)) {
+    			encontrado = res;
+    			break;
+    		}
+    	}
+		return encontrado;
+	}
+	private void createEditorLayout(SplitLayout splitLayout) {
         Div editorLayoutDiv = new Div();
         editorLayoutDiv.setClassName("editor-layout");
 
@@ -246,32 +258,18 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     }
 
     private void populateForm(SamplePerson value) {
-/*
-        this.ClienteSeleccionado = value;
+
+        this.samplePerson = value;
        if(value != null) {
     	   identidad.setValue(value.getIdentidad());
     	   nombre.setValue(value.getNombre());
     	   apellido.setValue(value.getApellido());
     	   correo.setValue(value.getCorreo());
     	   telefono.setValue(value.getTelefono());
-    	   fechaCumpleaños.setValue(value.getFechaCumpleaños());
     	   sexo.setValue(value.getSexo());
     	   nacionalidad.setValue(value.getNacionalidad());
     	   lugarProcedencia.setValue(value.getLugarProcedencia());   
        }     
-
-        this.samplePerson = value;
-        if(value!=null) {
-        	identidad.setValue(value.getIdentidad());
-            nombre.setValue(value.getNombre());;
-            apellido.setValue(value.getApellido());;
-            correo.setValue(value.getCorreo());;
-            telefono.setValue(value.getTelefono());;
-            fechaCumpleaños.setValue(value.getFechaCumpleaños());;
-            sexo.setValue(value.getSexo());;
-            nacionalidad.setValue(value.getNacionalidad());;
-            lugarProcedencia.setValue(value.getLugarProcedencia());;
-        }*/
 
 
     }
