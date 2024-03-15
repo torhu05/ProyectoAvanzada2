@@ -100,10 +100,10 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         grid.addColumn("apellido").setAutoWidth(true);
         grid.addColumn("correo").setAutoWidth(true);
         grid.addColumn("telefono").setAutoWidth(true);
-        grid.addColumn("fechaCumpleaños").setAutoWidth(true);
+        grid.addColumn("fechacumpleanos").setAutoWidth(true);
         grid.addColumn("sexo").setAutoWidth(true);
         grid.addColumn("nacionalidad").setAutoWidth(true);
-        grid.addColumn("lugarProcedencia").setAutoWidth(true);
+        grid.addColumn("lugarprocedencia").setAutoWidth(true);
         
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
@@ -211,7 +211,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         correo.setPrefixComponent(VaadinIcon.AT.create());
         telefono = new TextField("Telefono");
         telefono.setPrefixComponent(VaadinIcon.PHONE.create());
-        fechacumpleanos = new DatePicker("Fecha Cumpleaños");
+        fechacumpleanos = new DatePicker("Fecha Cumpleanos");
         fechacumpleanos.setPrefixComponent(VaadinIcon.DATE_INPUT.create());
         sexo = new ComboBox<>("Sexo");
         sexo.setPrefixComponent(VaadinIcon.FAMILY.create());
@@ -268,7 +268,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     	   telefono.setValue(value.getTelefono());
     	   sexo.setValue(value.getSexo());
     	   nacionalidad.setValue(value.getNacionalidad());
-    	   lugarProcedencia.setValue(value.getLugarProcedencia());   
+    	   lugarProcedencia.setValue(value.getLugarprocedencia());   
        }     
 
 

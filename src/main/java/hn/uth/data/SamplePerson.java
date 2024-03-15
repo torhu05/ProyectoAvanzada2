@@ -19,9 +19,14 @@ public class SamplePerson extends AbstractEntity {
     private String sexo;
     private String nacionalidad;
     private String lugarprocedencia;
-  		
-	
-    public String getNombre() {
+    
+	public String getIdentidad() {
+		return identidad;
+	}
+	public void setIdentidad(String identidad) {
+		this.identidad = identidad;
+	}
+	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
@@ -45,18 +50,11 @@ public class SamplePerson extends AbstractEntity {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	public String getFechaCumpleaños() {
+	public String getFechacumpleanos() {
 		return fechacumpleanos;
 	}
-	public void setFechaCumpleaños(String fechaCumpleaños) {
-		this.fechacumpleanos = fechaCumpleaños;
-	}
-	    
-	public String getIdentidad() {
-		return identidad;
-	}
-	public void setIdentidad(String identidad) {
-		this.identidad = identidad;
+	public void setFechacumpleanos(String fechacumpleanos) {
+		this.fechacumpleanos = fechacumpleanos;
 	}
 	public String getSexo() {
 		return sexo;
@@ -70,11 +68,13 @@ public class SamplePerson extends AbstractEntity {
 	public void setNacionalidad(String nacionalidad) {
 		this.nacionalidad = nacionalidad;
 	}
-	public String getLugarProcedencia() {
+	public String getLugarprocedencia() {
 		return lugarprocedencia;
 	}
-	public void setLugarProcedencia(String lugarProcedencia) {
-		this.lugarprocedencia = lugarProcedencia;
+	public void setLugarprocedencia(String lugarprocedencia) {
+		this.lugarprocedencia = lugarprocedencia;
 	}
-	
 }
+		
+	
+    
