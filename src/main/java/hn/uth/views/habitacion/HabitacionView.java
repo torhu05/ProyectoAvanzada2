@@ -177,14 +177,17 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
         ocupacion = new ComboBox("Ocupacion");
         ocupacion.setPrefixComponent(VaadinIcon.BED.create());
         ocupacion.setId("ocupacion");
+        ocupacion.setItems("Cama 1","Cama 2","Cama 3");
         
         precio = new ComboBox("Precio");	
         precio.setPrefixComponent(VaadinIcon.MONEY.create());
         precio.setId("precio");
+        precio.setItems("L.2,300.00","L.3,100.00","L.4,200.00");
         
         tipohabitacion = new ComboBox("Tipo Habitacion");
         tipohabitacion.setPrefixComponent(VaadinIcon.STORAGE.create());
         tipohabitacion.setId("tipohabitacion");
+        tipohabitacion.setItems("Individual","Doble","Triple");
         
         formLayout.add(numerohabitacion,ocupacion,precio,tipohabitacion);
 
