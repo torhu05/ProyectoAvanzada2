@@ -10,12 +10,11 @@ public class SampleAddress extends AbstractEntity {
 
 	
     private String ticket;
-    private double precioTotal;
-    private String idHabitacion;
-    private String idCliente;
-    private LocalDate fecInicio;
-    private LocalDate fecFinal;
-    
+    private double preciototal;
+    private String idhabitacion;
+    private String idcliente;
+    private String fechainicio;
+    private String fechafinal;
     
 	public String getTicket() {
 		return ticket;
@@ -23,36 +22,40 @@ public class SampleAddress extends AbstractEntity {
 	public void setTicket(String ticket) {
 		this.ticket = ticket;
 	}
-	public double getPrecioTotal() {
-		return precioTotal;
+	public double getPreciototal() {
+		return preciototal;
 	}
-	public void setPrecioTotal(double precioTotal) {
-		this.precioTotal = precioTotal;
+	public void setPreciototal(double preciototal) {
+		this.preciototal = preciototal;
 	}
-	public String getIdHabitacion() {
-		return idHabitacion;
+	public String getIdhabitacion() {
+		return idhabitacion;
 	}
-	public void setIdHabitacion(String idHabitacion) {
-		this.idHabitacion = idHabitacion;
+	public void setIdhabitacion(String idhabitacion) {
+		this.idhabitacion = idhabitacion;
 	}
-	public String getIdCliente() {
-		return idCliente;
+	public String getIdcliente() {
+		return idcliente;
 	}
-	public void setIdCliente(String idCliente) {
-		this.idCliente = idCliente;
+	public void setIdcliente(String idcliente) {
+		this.idcliente = idcliente;
 	}
-	public LocalDate getFecInicio() {
-		return fecInicio;
+	public String getFechainicio() {
+		return fechainicio;
 	}
-	public void setFecInicio(LocalDate fecInicio) {
-		this.fecInicio = fecInicio;
+	public void setFechainicio(String fechainicio) {
+		this.fechainicio = fechainicio;
 	}
-	public LocalDate getFecFinal() {
-		return fecFinal;
+	public String getFechafinal() {
+		return fechafinal;
 	}
-	public void setFecFinal(LocalDate fecFinal) {
-		this.fecFinal = fecFinal;
+	public void setFechafinal(String fechafinal) {
+		this.fechafinal = fechafinal;
 	}
+	
+    
+	
+	
 	
     
     

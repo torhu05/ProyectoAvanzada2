@@ -30,9 +30,19 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoIcon;
 
+import hn.uth.controller.InteractorCliente;
+import hn.uth.controller.InteractorImplCliente;
+import hn.uth.data.SampleAddress;
 import hn.uth.data.SamplePerson;
 import hn.uth.views.MainLayout;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+
+import javax.swing.JOptionPane;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
@@ -40,7 +50,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 @Route(value = "Cliente/:samplePersonID?/:action?(edit)", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 @Uses(Icon.class)
-public class ClienteView extends Div implements BeforeEnterObserver {
+public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCliente {
 
     private final String SAMPLEPERSON_ID = "samplePersonID";
     private final String SAMPLEPERSON_EDIT_ROUTE_TEMPLATE = "Cliente/%s/edit";
@@ -52,7 +62,7 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     private TextField apellido;
     private TextField correo;
     private TextField telefono;
-    private DatePicker fechaCumpleaños;
+    private DatePicker fechacumpleanos;
     private ComboBox<String> sexo;
     private TextField nacionalidad;
     private TextField lugarProcedencia;
@@ -62,7 +72,8 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     private final Button eliminar = new Button("Eliminar", new Icon(VaadinIcon.CLOSE_CIRCLE));
     
     private SamplePerson ClienteSeleccionado;
-
+    private List<SamplePerson> elementos;
+    private InteractorCliente controlador;
 
     private SamplePerson samplePerson;
 
@@ -70,7 +81,11 @@ public class ClienteView extends Div implements BeforeEnterObserver {
 
     public ClienteView() {
         addClassNames("cliente-view");
+        
+        controlador = new InteractorImplCliente(this);
+        elementos = new ArrayList<>();
 
+        
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
@@ -95,12 +110,14 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(SAMPLEPERSON_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+                UI.getCurrent().navigate(String.format(SAMPLEPERSON_EDIT_ROUTE_TEMPLATE, event.getValue().getIdentidad()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(ClienteView.class);
             }
         });
+        
+        controlador.consultarCliente();
 
 
         cancel.addClickListener(e -> {
@@ -144,27 +161,38 @@ public class ClienteView extends Div implements BeforeEnterObserver {
     } 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        /*Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
+        Optional<String> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID);
         if (samplePersonId.isPresent()) {
-           /* Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
-            if (samplePersonFromBackend.isPresent()) {
-                populateForm(samplePersonFromBackend.get());
+        	SamplePerson ClienteObtenido = obtenerCliente(samplePersonId.get());
+            if (ClienteObtenido!=null) {
+                populateForm(ClienteObtenido);
             } else {
                 Notification.show(
-                        String.format("The requested samplePerson was not found, ID = %s", samplePersonId.get()), 3000,
+                        String.format("Cliente con identidad %s no existe", samplePersonId.get()), 3000,
                         Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
                 event.forwardTo(ClienteView.class);
 
-            }*/
-             
+            }
+        }
        
 
     }
 
-    private void createEditorLayout(SplitLayout splitLayout) {
+    private SamplePerson obtenerCliente(String identidad) {
+		// TODO Auto-generated method stub
+    	SamplePerson encontrado = null;
+    	for(SamplePerson res: elementos) {
+    		if(res.getIdentidad().equals(identidad)) {
+    			encontrado = res;
+    			break;
+    		}
+    	}
+		return encontrado;
+	}
+	private void createEditorLayout(SplitLayout splitLayout) {
         Div editorLayoutDiv = new Div();
         editorLayoutDiv.setClassName("editor-layout");
 
@@ -183,17 +211,18 @@ public class ClienteView extends Div implements BeforeEnterObserver {
         correo.setPrefixComponent(VaadinIcon.AT.create());
         telefono = new TextField("Telefono");
         telefono.setPrefixComponent(VaadinIcon.PHONE.create());
-        fechaCumpleaños = new DatePicker("Fecha Cumpleaños");
-        fechaCumpleaños.setPrefixComponent(VaadinIcon.DATE_INPUT.create());
+        fechacumpleanos = new DatePicker("Fecha Cumpleaños");
+        fechacumpleanos.setPrefixComponent(VaadinIcon.DATE_INPUT.create());
         sexo = new ComboBox<>("Sexo");
         sexo.setPrefixComponent(VaadinIcon.FAMILY.create());
         sexo.setAllowCustomValue(true);
+        sexo.setItems("Femenino","Masculino");
         
         nacionalidad = new TextField("Nacionalidad");
         nacionalidad.setPrefixComponent(VaadinIcon.MAP_MARKER.create());
         lugarProcedencia = new TextField("Lugar de Procedencia");
         lugarProcedencia.setPrefixComponent(VaadinIcon.AIRPLANE.create());
-        formLayout.add(identidad, nombre, apellido, correo, telefono, fechaCumpleaños, sexo, nacionalidad, lugarProcedencia);
+        formLayout.add(identidad, nombre, apellido, correo, telefono, fechacumpleanos, sexo, nacionalidad, lugarProcedencia);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -230,32 +259,29 @@ public class ClienteView extends Div implements BeforeEnterObserver {
 
     private void populateForm(SamplePerson value) {
 
-        this.ClienteSeleccionado = value;
+        this.samplePerson = value;
        if(value != null) {
     	   identidad.setValue(value.getIdentidad());
     	   nombre.setValue(value.getNombre());
     	   apellido.setValue(value.getApellido());
     	   correo.setValue(value.getCorreo());
     	   telefono.setValue(value.getTelefono());
-    	   fechaCumpleaños.setValue(value.getFechaCumpleaños());
     	   sexo.setValue(value.getSexo());
     	   nacionalidad.setValue(value.getNacionalidad());
     	   lugarProcedencia.setValue(value.getLugarProcedencia());   
        }     
 
-        this.samplePerson = value;
-        if(value!=null) {
-        	identidad.setValue(value.getIdentidad());
-            nombre.setValue(value.getNombre());;
-            apellido.setValue(value.getApellido());;
-            correo.setValue(value.getCorreo());;
-            telefono.setValue(value.getTelefono());;
-            fechaCumpleaños.setValue(value.getFechaCumpleaños());;
-            sexo.setValue(value.getSexo());;
-            nacionalidad.setValue(value.getNacionalidad());;
-            lugarProcedencia.setValue(value.getLugarProcedencia());;
-        }
-
 
     }
+	@Override
+	public void mostrarClientesEnGrid(List<SamplePerson> items) {
+		Collection<SamplePerson> itemsCollection = items;
+		grid.setItems(itemsCollection);
+		this.elementos = items;
+	}
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+		Notification.show(mensaje);	
+		
+	}
 }

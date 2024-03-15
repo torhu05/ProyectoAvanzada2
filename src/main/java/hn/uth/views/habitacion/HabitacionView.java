@@ -30,18 +30,27 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+
+import hn.uth.controller.InteractorHabitacion;
+import hn.uth.controller.InteractorImplHabitacion;
+import hn.uth.controller.InteractorImplReserva;
+import hn.uth.controller.InteractorReserva;
+import hn.uth.data.SampleAddress;
 import hn.uth.data.SampleBook;
 import hn.uth.views.MainLayout;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Habitacion")
 @Route(value = "Habitacion/:sampleBookID?/:action?(edit)", layout = MainLayout.class)
-public class HabitacionView extends Div implements BeforeEnterObserver {
+public class HabitacionView extends Div implements BeforeEnterObserver, ViewModelHabitacion {
 
     private final String SAMPLEBOOK_ID = "sampleBookID";
     private final String SAMPLEBOOK_EDIT_ROUTE_TEMPLATE = "Habitacion/%s/edit";
@@ -61,11 +70,17 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
 
 
     private SampleBook sampleBook;
+    
+    private List<SampleBook> elementos;
+    private InteractorHabitacion controlador;
 
 
     public HabitacionView() {
         addClassNames("habitacion-view");
 
+        
+        controlador = new InteractorImplHabitacion(this);
+        elementos = new ArrayList<>();
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
@@ -84,12 +99,14 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(SAMPLEBOOK_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+                UI.getCurrent().navigate(String.format(SAMPLEBOOK_EDIT_ROUTE_TEMPLATE, event.getValue().getNumerohabitacion()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(HabitacionView.class);
             }
         });
+        
+        controlador.consultarHabitacion();
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -116,23 +133,35 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        /*Optional<Long> sampleBookId = event.getRouteParameters().get(SAMPLEBOOK_ID).map(Long::parseLong);
+        Optional<String> sampleBookId = event.getRouteParameters().get(SAMPLEBOOK_ID);
         if (sampleBookId.isPresent()) {
-            Optional<SampleBook> sampleBookFromBackend = sampleBookService.get(sampleBookId.get());
-            if (sampleBookFromBackend.isPresent()) {
-                populateForm(sampleBookFromBackend.get());
+            SampleBook habitacionObtenida = obtenerHabitacion(sampleBookId.get());
+            if (habitacionObtenida!=null) {
+                populateForm(habitacionObtenida);
             } else {
-                Notification.show(String.format("The requested sampleBook was not found, ID = %s", sampleBookId.get()),
+                Notification.show(String.format("El empleado con identidad = %s no existe", sampleBookId.get()),
                         3000, Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
                 event.forwardTo(HabitacionView.class);
             }
-        }*/
+        }
     }
 
-    private void createEditorLayout(SplitLayout splitLayout) {
+    private SampleBook obtenerHabitacion(String identidad) {
+		// TODO Auto-generated method stub
+    	SampleBook encontrado = null;
+    	for(SampleBook hab: elementos) {
+    		if(hab.getNumerohabitacion().equals(identidad)) {
+    			encontrado = hab;
+    			break;
+    		}
+    	}
+		return encontrado;
+	}
+
+	private void createEditorLayout(SplitLayout splitLayout) {
         Div editorLayoutDiv = new Div();
         editorLayoutDiv.setClassName("editor-layout");
 
@@ -216,8 +245,29 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
 
     private void populateForm(SampleBook value) {
         this.sampleBook = value;
-       
+        if(value != null) {
+        	numerohabitacion.setValue(value.getNumerohabitacion());
+        	ocupacion.setValue(value.getOcupacion());
+        	precio.setValue(Double.toString(value.getPrecio()));
+        	tipohabitacion.setValue(value.getTipohabitacion());
         }
+       
+    }
+
+	@Override
+	public void mostrarHabitacionEnGrid(List<SampleBook> items) {
+		// TODO Auto-generated method stub
+		Collection<SampleBook> itemsCollection = items;
+		grid.setItems(itemsCollection);
+		this.elementos = items;
+		
+	}
+
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+		// TODO Auto-generated method stub
+		
+	}
 
     }
 
