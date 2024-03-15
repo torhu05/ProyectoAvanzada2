@@ -143,15 +143,19 @@ public class HabitacionView extends Div implements BeforeEnterObserver {
         FormLayout formLayout = new FormLayout();
         numerohabitacion = new TextField("Numero habitacion");
         numerohabitacion.setPrefixComponent(VaadinIcon.TICKET.create());
+        numerohabitacion.setId("numerohabitacion");
+        
         ocupacion = new ComboBox("Ocupacion");
-        ocupacion.setItems("Cama 1","Cama 2","Cama 3");
         ocupacion.setPrefixComponent(VaadinIcon.BED.create());
+        ocupacion.setId("ocupacion");
+        
         precio = new ComboBox("Precio");	
-        precio.setItems("L.2,300.00","L.3,100.00","L.4,200.00");
         precio.setPrefixComponent(VaadinIcon.MONEY.create());
+        precio.setId("precio");
+        
         tipohabitacion = new ComboBox("Tipo Habitacion");
-        tipohabitacion.setItems("Individual","Doble","Triple");
         tipohabitacion.setPrefixComponent(VaadinIcon.STORAGE.create());
+        tipohabitacion.setId("tipohabitacion");
         
         formLayout.add(numerohabitacion,ocupacion,precio,tipohabitacion);
 
