@@ -2,9 +2,11 @@ package hn.uth.model;
 
 import java.io.IOException;
 
+import hn.uth.data.Cliente;
 import hn.uth.data.ClienteResponse;
 import hn.uth.data.HabitacionResponse;
 import hn.uth.data.ReservaResponse;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Call;
 
@@ -62,4 +64,11 @@ public class DatabaseRepositoryImpl {
 			return null;
 		}
 	}
+	
+	public boolean CrearCliente(Cliente nuevo) throws IOException {
+		Call<ResponseBody> call = client.getDB().CrearCliente(nuevo);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
 }

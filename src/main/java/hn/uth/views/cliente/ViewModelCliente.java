@@ -8,5 +8,5 @@ public interface ViewModelCliente {
 
 	void mostrarClientesEnGrid(List<Cliente> items);
 	void mostrarMensajeError(String mensaje);
-	
+	void mostrarMensajeExito(String mensaje);
 }

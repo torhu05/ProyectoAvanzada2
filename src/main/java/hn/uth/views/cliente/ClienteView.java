@@ -129,6 +129,18 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
             try {
                 if (this.ClienteSeleccionado == null) {
                     this.ClienteSeleccionado = new Cliente();
+                    this.ClienteSeleccionado.setIdentidad(identidad.getValue());
+                    this.ClienteSeleccionado.setNombre(nombre.getValue());
+                    this.ClienteSeleccionado.setApellido(apellido.getValue());
+                    this.ClienteSeleccionado.setCorreo(correo.getValue());
+                    this.ClienteSeleccionado.setTelefono(telefono.getValue());
+                    this.ClienteSeleccionado.setFechacumpleanos(fechacumpleanos.getValue().toString());
+                    this.ClienteSeleccionado.setSexo(sexo.getValue());
+                    this.ClienteSeleccionado.setNacionalidad(nacionalidad.getValue());
+                    this.ClienteSeleccionado.setLugarprocedencia(lugarProcedencia.getValue());
+                    this.controlador.CrearCliente(ClienteSeleccionado);
+                }else {
+                	
                 }
 
                 clearForm();
@@ -281,6 +293,11 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
 	}
 	@Override
 	public void mostrarMensajeError(String mensaje) {
+		Notification.show(mensaje);	
+		
+	}
+	@Override
+	public void mostrarMensajeExito(String mensaje) {
 		Notification.show(mensaje);	
 		
 	}

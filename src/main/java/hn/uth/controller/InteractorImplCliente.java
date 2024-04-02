@@ -1,5 +1,6 @@
 package hn.uth.controller;
 
+import hn.uth.data.Cliente;
 import hn.uth.data.ClienteResponse;
 import hn.uth.model.DatabaseRepositoryImpl;
 import hn.uth.views.cliente.ViewModelCliente;
@@ -30,6 +31,20 @@ public class InteractorImplCliente implements InteractorCliente{
 		}
 	}
 	
-	
+	@Override
+	public void CrearCliente(Cliente nuevo) {
+		try {
+			boolean creado = this.modelo.CrearCliente(nuevo);
+			if(creado == true) {
+				this.vista.mostrarMensajeExito("Cliente creado exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al crear el cliente");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 
 }
