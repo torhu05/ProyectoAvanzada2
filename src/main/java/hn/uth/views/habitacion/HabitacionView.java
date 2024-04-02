@@ -35,8 +35,8 @@ import hn.uth.controller.InteractorHabitacion;
 import hn.uth.controller.InteractorImplHabitacion;
 import hn.uth.controller.InteractorImplReserva;
 import hn.uth.controller.InteractorReserva;
-import hn.uth.data.SampleAddress;
-import hn.uth.data.SampleBook;
+import hn.uth.data.Reserva;
+import hn.uth.data.Habitacion;
 import hn.uth.views.MainLayout;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -55,7 +55,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
     private final String SAMPLEBOOK_ID = "sampleBookID";
     private final String SAMPLEBOOK_EDIT_ROUTE_TEMPLATE = "Habitacion/%s/edit";
 
-    private final Grid<SampleBook> grid = new Grid<>(SampleBook.class, false);
+    private final Grid<Habitacion> grid = new Grid<>(Habitacion.class, false);
 
     private TextField numerohabitacion;
     private ComboBox<String> ocupacion;
@@ -69,9 +69,9 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
     
 
 
-    private SampleBook sampleBook;
+    private Habitacion sampleBook;
     
-    private List<SampleBook> elementos;
+    private List<Habitacion> elementos;
     private InteractorHabitacion controlador;
 
 
@@ -116,7 +116,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
         save.addClickListener(e -> {
             try {
                 if (this.sampleBook == null) {
-                    this.sampleBook = new SampleBook();
+                    this.sampleBook = new Habitacion();
                 }
                 clearForm();
                 refreshGrid();
@@ -135,7 +135,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<String> sampleBookId = event.getRouteParameters().get(SAMPLEBOOK_ID);
         if (sampleBookId.isPresent()) {
-            SampleBook habitacionObtenida = obtenerHabitacion(sampleBookId.get());
+            Habitacion habitacionObtenida = obtenerHabitacion(sampleBookId.get());
             if (habitacionObtenida!=null) {
                 populateForm(habitacionObtenida);
             } else {
@@ -149,10 +149,10 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
         }
     }
 
-    private SampleBook obtenerHabitacion(String identidad) {
+    private Habitacion obtenerHabitacion(String identidad) {
 		// TODO Auto-generated method stub
-    	SampleBook encontrado = null;
-    	for(SampleBook hab: elementos) {
+    	Habitacion encontrado = null;
+    	for(Habitacion hab: elementos) {
     		if(hab.getNumerohabitacion().equals(identidad)) {
     			encontrado = hab;
     			break;
@@ -230,7 +230,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
             preview.setSrc(resource);
             preview.setVisible(true);
             if (this.sampleBook == null) {
-                this.sampleBook = new SampleBook();
+                this.sampleBook = new Habitacion();
             }
           //  this.sampleBook.setImage(uploadBuffer.toByteArray());
         });
@@ -246,7 +246,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
         populateForm(null);
     }
 
-    private void populateForm(SampleBook value) {
+    private void populateForm(Habitacion value) {
         this.sampleBook = value;
         if(value != null) {
         	numerohabitacion.setValue(value.getNumerohabitacion());
@@ -258,9 +258,9 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
     }
 
 	@Override
-	public void mostrarHabitacionEnGrid(List<SampleBook> items) {
+	public void mostrarHabitacionEnGrid(List<Habitacion> items) {
 		// TODO Auto-generated method stub
-		Collection<SampleBook> itemsCollection = items;
+		Collection<Habitacion> itemsCollection = items;
 		grid.setItems(itemsCollection);
 		this.elementos = items;
 		

@@ -2,10 +2,10 @@ package hn.uth.views.habitacion;
 
 import java.util.List;
 
-import hn.uth.data.SampleBook;
+import hn.uth.data.Habitacion;
 
 public interface ViewModelHabitacion {
 
-	void mostrarHabitacionEnGrid(List<SampleBook> items);
+	void mostrarHabitacionEnGrid(List<Habitacion> items);
 	void mostrarMensajeError(String mensaje);
 }

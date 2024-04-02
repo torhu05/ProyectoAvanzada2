@@ -4,13 +4,13 @@ import java.util.List;
 
 public class ReservaResponse {
 
-	private List<SampleAddress> items;
+	private List<Reserva> items;
 	private int count;
 	
-	public List<SampleAddress> getItems() {
+	public List<Reserva> getItems() {
 		return items;
 	}
-	public void setItems(List<SampleAddress> items) {
+	public void setItems(List<Reserva> items) {
 		this.items = items;
 	}
 	public int getCount() {

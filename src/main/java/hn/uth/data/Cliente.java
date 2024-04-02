@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @Entity
-public class SamplePerson extends AbstractEntity {
+public class Cliente extends AbstractEntity {
 	
 	private String identidad;
     private String nombre;

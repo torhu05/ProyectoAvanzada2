@@ -3,13 +3,13 @@ import java.util.List;
 
 public class ClienteResponse {
 
-	private List<SamplePerson> items;
+	private List<Cliente> items;
 	private int count;
 	
-	public List<SamplePerson> getItems() {
+	public List<Cliente> getItems() {
 		return items;
 	}
-	public void setItems(List<SamplePerson> items) {
+	public void setItems(List<Cliente> items) {
 		this.items = items;
 	}
 	public int getCount() {

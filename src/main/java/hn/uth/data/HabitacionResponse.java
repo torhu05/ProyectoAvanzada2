@@ -4,13 +4,13 @@ import java.util.List;
 
 public class HabitacionResponse {
 
-	private List<SampleBook> items;
+	private List<Habitacion> items;
 	private int count;
 	
-	public List<SampleBook> getItems() {
+	public List<Habitacion> getItems() {
 		return items;
 	}
-	public void setItems(List<SampleBook> items) {
+	public void setItems(List<Habitacion> items) {
 		this.items = items;
 	}
 	public int getCount() {

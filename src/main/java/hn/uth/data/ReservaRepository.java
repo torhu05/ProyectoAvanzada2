@@ -4,9 +4,9 @@ package hn.uth.data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface SampleAddressRepository
+public interface ReservaRepository
         extends
-            JpaRepository<SampleAddress, Long>,
-            JpaSpecificationExecutor<SampleAddress> {
+            JpaRepository<Reserva, Long>,
+            JpaSpecificationExecutor<Reserva> {
 
 }

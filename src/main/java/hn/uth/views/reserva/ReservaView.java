@@ -27,9 +27,9 @@ import hn.uth.controller.InteractorCliente;
 import hn.uth.controller.InteractorImplCliente;
 import hn.uth.controller.InteractorImplReserva;
 import hn.uth.controller.InteractorReserva;
-import hn.uth.data.SampleAddress;
-import hn.uth.data.SampleBook;
-import hn.uth.data.SamplePerson;
+import hn.uth.data.Reserva;
+import hn.uth.data.Habitacion;
+import hn.uth.data.Cliente;
 import hn.uth.views.MainLayout;
 
 import java.time.LocalDate;
@@ -49,7 +49,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
     private final String SAMPLEADDRESS_ID = "sampleAddressID";
     private final String SAMPLEADDRESS_EDIT_ROUTE_TEMPLATE = "Reserva/%s/edit";
 
-    private final Grid<SampleAddress> grid = new Grid<>(SampleAddress.class, false);
+    private final Grid<Reserva> grid = new Grid<>(Reserva.class, false);
 
     private TextField ticket;
     private TextField precioTotal;
@@ -64,10 +64,10 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
     private final Button eliminar = new Button("Eliminar");
 
 
-    private SampleAddress sampleAddress;
+    private Reserva sampleAddress;
 
 
-    private List<SampleAddress> elementos;
+    private List<Reserva> elementos;
     private InteractorReserva controlador;
   
 
@@ -125,7 +125,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
         save.addClickListener(e -> {
             try {
                 if (this.sampleAddress == null) {
-                    this.sampleAddress = new SampleAddress();
+                    this.sampleAddress = new Reserva();
                 }
 
                 clearForm();
@@ -146,7 +146,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<String> sampleAddressId = event.getRouteParameters().get(SAMPLEADDRESS_ID);
         if (sampleAddressId.isPresent()) {
-        	SampleAddress reservaObtenida = obtenerReserva(sampleAddressId.get());
+        	Reserva reservaObtenida = obtenerReserva(sampleAddressId.get());
             if (reservaObtenida != null) {
                 populateForm(reservaObtenida);
             } else {
@@ -164,11 +164,11 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
     
 
-    private SampleAddress obtenerReserva(String ticket) {
+    private Reserva obtenerReserva(String ticket) {
 		// TODO Auto-generated method stub
     
-    	SampleAddress encontrado = null;
-    	for(SampleAddress res: elementos) {
+    	Reserva encontrado = null;
+    	for(Reserva res: elementos) {
     		if(res.getTicket().equals(ticket)) {
     			encontrado = res;
     			break;
@@ -235,7 +235,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
         populateForm(null);
     }
 
-    private void populateForm(SampleAddress value) {
+    private void populateForm(Reserva value) {
         this.sampleAddress = value;
 
         if(value != null) {
@@ -249,10 +249,10 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
 
 	@Override
-	public void mostrarReservaEnGrid(List<SampleAddress> items) {
+	public void mostrarReservaEnGrid(List<Reserva> items) {
 		// TODO Auto-generated method stub
 		
-		Collection<SampleAddress> itemsCollection = items;
+		Collection<Reserva> itemsCollection = items;
 		grid.setItems(itemsCollection);
 		this.elementos = items;
 		

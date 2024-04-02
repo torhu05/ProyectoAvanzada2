@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import jakarta.persistence.Entity;
 
 @Entity
-public class SampleAddress extends AbstractEntity {
+public class Reserva extends AbstractEntity {
 
 	
     private String ticket;

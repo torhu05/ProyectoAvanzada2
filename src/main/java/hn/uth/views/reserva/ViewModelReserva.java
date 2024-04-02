@@ -2,10 +2,10 @@ package hn.uth.views.reserva;
 
 import java.util.List;
 
-import hn.uth.data.SampleAddress;
+import hn.uth.data.Reserva;
 
 public interface ViewModelReserva {
 
-	void mostrarReservaEnGrid(List<SampleAddress> items);
+	void mostrarReservaEnGrid(List<Reserva> items);
 	void mostrarMensajeError(String mensaje);
 }

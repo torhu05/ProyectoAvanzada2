@@ -32,8 +32,8 @@ import com.vaadin.flow.theme.lumo.LumoIcon;
 
 import hn.uth.controller.InteractorCliente;
 import hn.uth.controller.InteractorImplCliente;
-import hn.uth.data.SampleAddress;
-import hn.uth.data.SamplePerson;
+import hn.uth.data.Reserva;
+import hn.uth.data.Cliente;
 import hn.uth.views.MainLayout;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     private final String SAMPLEPERSON_ID = "samplePersonID";
     private final String SAMPLEPERSON_EDIT_ROUTE_TEMPLATE = "Cliente/%s/edit";
 
-    private final Grid<SamplePerson> grid = new Grid<>(SamplePerson.class, false);
+    private final Grid<Cliente> grid = new Grid<>(Cliente.class, false);
 
     private TextField identidad;
     private TextField nombre; 
@@ -71,11 +71,11 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     private final Button save = new Button("Guardar", new Icon(VaadinIcon.CHECK_CIRCLE));
     private final Button eliminar = new Button("Eliminar", new Icon(VaadinIcon.CLOSE_CIRCLE));
     
-    private SamplePerson ClienteSeleccionado;
-    private List<SamplePerson> elementos;
+    private Cliente ClienteSeleccionado;
+    private List<Cliente> elementos;
     private InteractorCliente controlador;
 
-    private SamplePerson samplePerson;
+    private Cliente samplePerson;
 
 
 
@@ -128,7 +128,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         save.addClickListener(e -> {
             try {
                 if (this.ClienteSeleccionado == null) {
-                    this.ClienteSeleccionado = new SamplePerson();
+                    this.ClienteSeleccionado = new Cliente();
                 }
 
                 clearForm();
@@ -163,7 +163,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<String> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID);
         if (samplePersonId.isPresent()) {
-        	SamplePerson ClienteObtenido = obtenerCliente(samplePersonId.get());
+        	Cliente ClienteObtenido = obtenerCliente(samplePersonId.get());
             if (ClienteObtenido!=null) {
                 populateForm(ClienteObtenido);
             } else {
@@ -181,10 +181,10 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
 
     }
 
-    private SamplePerson obtenerCliente(String identidad) {
+    private Cliente obtenerCliente(String identidad) {
 		// TODO Auto-generated method stub
-    	SamplePerson encontrado = null;
-    	for(SamplePerson res: elementos) {
+    	Cliente encontrado = null;
+    	for(Cliente res: elementos) {
     		if(res.getIdentidad().equals(identidad)) {
     			encontrado = res;
     			break;
@@ -257,7 +257,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         populateForm(null);
     }
 
-    private void populateForm(SamplePerson value) {
+    private void populateForm(Cliente value) {
 
         this.samplePerson = value;
        if(value != null) {
@@ -274,8 +274,8 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
 
     }
 	@Override
-	public void mostrarClientesEnGrid(List<SamplePerson> items) {
-		Collection<SamplePerson> itemsCollection = items;
+	public void mostrarClientesEnGrid(List<Cliente> items) {
+		Collection<Cliente> itemsCollection = items;
 		grid.setItems(itemsCollection);
 		this.elementos = items;
 	}

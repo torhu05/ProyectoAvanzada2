@@ -6,7 +6,7 @@ import jakarta.persistence.Lob;
 
 
 @Entity
-public class SampleBook extends AbstractEntity {
+public class Habitacion extends AbstractEntity {
 
     @Lob
     @Column(length = 1000000)

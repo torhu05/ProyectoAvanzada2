@@ -4,9 +4,9 @@ package hn.uth.data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface SamplePersonRepository
+public interface ClienteRepository
         extends
-            JpaRepository<SamplePerson, Long>,
-            JpaSpecificationExecutor<SamplePerson> {
+            JpaRepository<Cliente, Long>,
+            JpaSpecificationExecutor<Cliente> {
 
 }
