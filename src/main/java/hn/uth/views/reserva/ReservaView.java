@@ -3,7 +3,6 @@ package hn.uth.views.reserva;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -54,8 +53,8 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
     private TextField ticket;
     private TextField precioTotal;
-    private ComboBox<String> idHabitacion;
-    private ComboBox<String> idCliente;
+    private TextField idHabitacion;
+    private TextField idCliente;
     private DatePicker fechaInicio;
     private DatePicker fechaFinal;
 
@@ -200,14 +199,10 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
         ticket.setPrefixComponent(VaadinIcon.TICKET.create());
         precioTotal = new TextField("precio total");
         precioTotal.setPrefixComponent(VaadinIcon.MONEY.create());
-        idHabitacion = new ComboBox<>("id habitacion"); 
+        idHabitacion = new TextField("id habitacion");
         idHabitacion.setPrefixComponent(VaadinIcon.HOME.create());
-        
-        
-        idCliente = new ComboBox<>("id Cliente");
+        idCliente = new TextField("id Cliente");
         idCliente.setPrefixComponent(VaadinIcon.USERS.create());
-        
-        
         fechaInicio = new DatePicker("fecha inicio");
         fechaInicio.setPrefixComponent(VaadinIcon.CALENDAR.create());
         fechaFinal = new DatePicker("fecha final");
