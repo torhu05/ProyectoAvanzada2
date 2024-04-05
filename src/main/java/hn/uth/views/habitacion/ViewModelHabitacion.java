@@ -8,4 +8,5 @@ public interface ViewModelHabitacion {
 
 	void mostrarHabitacionEnGrid(List<Habitacion> items);
 	void mostrarMensajeError(String mensaje);
+	void mostrarMensajeExito(String mensaje);
 }

@@ -2,7 +2,9 @@ package hn.uth.model;
 
 import hn.uth.data.Cliente;
 import hn.uth.data.ClienteResponse;
+import hn.uth.data.Habitacion;
 import hn.uth.data.HabitacionResponse;
+import hn.uth.data.Reserva;
 import hn.uth.data.ReservaResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,6 +42,20 @@ public interface DatabaseRepository {
 	})
 	@POST("/pls/apex/torhu90/sgh/cliente")
 	Call<ResponseBody> CrearCliente(@Body Cliente nuevo);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@POST("/pls/apex/torhu90/sgh/habitacion")
+	Call<ResponseBody> CrearHabitacion(@Body Habitacion nuevo);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@POST("/pls/apex/torhu90/sgh/reserva")
+	Call<ResponseBody> CrearReserva(@Body Reserva nuevo);
 
 }
 

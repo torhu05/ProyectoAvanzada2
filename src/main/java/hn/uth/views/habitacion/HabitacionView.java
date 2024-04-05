@@ -36,6 +36,7 @@ import hn.uth.controller.InteractorImplHabitacion;
 import hn.uth.controller.InteractorImplReserva;
 import hn.uth.controller.InteractorReserva;
 import hn.uth.data.Reserva;
+import hn.uth.data.Cliente;
 import hn.uth.data.Habitacion;
 import hn.uth.views.MainLayout;
 import java.io.ByteArrayInputStream;
@@ -59,7 +60,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
 
     private TextField numerohabitacion;
     private ComboBox<String> ocupacion;
-    private ComboBox<String> precio;
+    private TextField precio;
     private ComboBox<String> tipohabitacion;
 
 
@@ -69,7 +70,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
     
 
 
-    private Habitacion sampleBook;
+    private Habitacion HabitacionS;
     
     private List<Habitacion> elementos;
     private InteractorHabitacion controlador;
@@ -115,8 +116,14 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
 
         save.addClickListener(e -> {
             try {
-                if (this.sampleBook == null) {
-                    this.sampleBook = new Habitacion();
+                if (this.HabitacionS == null) {
+		            this.HabitacionS = new Habitacion();
+		            this.HabitacionS.setNumerohabitacion(numerohabitacion.getValue());
+		            this.HabitacionS.setOcupacion(ocupacion.getValue());
+		            this.HabitacionS.setPrecio(Double.parseDouble(precio.getValue()));
+		            this.HabitacionS.setTipohabitacion(tipohabitacion.getValue());
+		            
+		            this.controlador.CrearHabitacion(HabitacionS);
                 }
                 clearForm();
                 refreshGrid();
@@ -174,17 +181,15 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
         numerohabitacion.setPrefixComponent(VaadinIcon.TICKET.create());
         numerohabitacion.setId("numerohabitacion");
         
-        ocupacion = new ComboBox("Ocupacion");
+        ocupacion = new ComboBox<>("Ocupacion");
         ocupacion.setPrefixComponent(VaadinIcon.BED.create());
         ocupacion.setId("ocupacion");
         ocupacion.setItems("Cama 1","Cama 2","Cama 3");
         
-        precio = new ComboBox("Precio");	
+        precio = new TextField("Precio");
         precio.setPrefixComponent(VaadinIcon.MONEY.create());
-        precio.setId("precio");
-        precio.setItems("L.2,300.00","L.3,100.00","L.4,200.00");
         
-        tipohabitacion = new ComboBox("Tipo Habitacion");
+        tipohabitacion = new ComboBox<>("Tipo Habitacion");
         tipohabitacion.setPrefixComponent(VaadinIcon.STORAGE.create());
         tipohabitacion.setId("tipohabitacion");
         tipohabitacion.setItems("Individual","Doble","Triple");
@@ -229,8 +234,8 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
                     () -> new ByteArrayInputStream(uploadBuffer.toByteArray()));
             preview.setSrc(resource);
             preview.setVisible(true);
-            if (this.sampleBook == null) {
-                this.sampleBook = new Habitacion();
+            if (this.HabitacionS == null) {
+                this.HabitacionS = new Habitacion();
             }
           //  this.sampleBook.setImage(uploadBuffer.toByteArray());
         });
@@ -240,6 +245,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
+        this.controlador.consultarHabitacion();
     }
 
     private void clearForm() {
@@ -247,7 +253,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
     }
 
     private void populateForm(Habitacion value) {
-        this.sampleBook = value;
+        this.HabitacionS = value;
         if(value != null) {
         	numerohabitacion.setValue(value.getNumerohabitacion());
         	ocupacion.setValue(value.getOcupacion());
@@ -269,6 +275,12 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
 	@Override
 	public void mostrarMensajeError(String mensaje) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mostrarMensajeExito(String mensaje) {
+		Notification.show(mensaje);	
 		
 	}
 

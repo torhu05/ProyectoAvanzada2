@@ -263,6 +263,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
+        this.controlador.consultarCliente();
     }
 
     private void clearForm() {

@@ -1,5 +1,7 @@
 package hn.uth.controller;
 
+import hn.uth.data.Habitacion;
+import hn.uth.data.Reserva;
 import hn.uth.data.ReservaResponse;
 import hn.uth.model.DatabaseRepositoryImpl;
 import hn.uth.views.reserva.ViewModelReserva;
@@ -31,4 +33,20 @@ public class InteractorImplReserva implements InteractorReserva{
 		}
 		
 	}
+	@Override
+	public void CrearReserva(Reserva nuevo) {
+		try {
+			boolean creado = this.modelo.CrearReserva(nuevo);
+			if(creado == true) {
+				this.vista.mostrarMensajeExito("Habitacion creada exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al crear la habitacion");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
+	
 }

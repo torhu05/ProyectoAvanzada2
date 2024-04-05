@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import hn.uth.data.Cliente;
 import hn.uth.data.ClienteResponse;
+import hn.uth.data.Habitacion;
 import hn.uth.data.HabitacionResponse;
+import hn.uth.data.Reserva;
 import hn.uth.data.ReservaResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -67,6 +69,18 @@ public class DatabaseRepositoryImpl {
 	
 	public boolean CrearCliente(Cliente nuevo) throws IOException {
 		Call<ResponseBody> call = client.getDB().CrearCliente(nuevo);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean CrearHabitacion(Habitacion nuevo) throws IOException {
+		Call<ResponseBody> call = client.getDB().CrearHabitacion(nuevo);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean CrearReserva(Reserva nuevo) throws IOException {
+		Call<ResponseBody> call = client.getDB().CrearReserva(nuevo);
 		Response<ResponseBody> response = call.execute();
 		return response.isSuccessful();
 	}

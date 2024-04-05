@@ -3,6 +3,7 @@ package hn.uth.views.reserva;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -53,8 +54,8 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
     private TextField ticket;
     private TextField precioTotal;
-    private TextField idHabitacion;
-    private TextField idCliente;
+    private ComboBox<String> idHabitacion;
+    private ComboBox<String> idCliente;
     private DatePicker fechaInicio;
     private DatePicker fechaFinal;
 
@@ -64,7 +65,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
     private final Button eliminar = new Button("Eliminar");
 
 
-    private Reserva sampleAddress;
+    private Reserva ReservaS;
 
 
     private List<Reserva> elementos;
@@ -124,8 +125,16 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
         save.addClickListener(e -> {
             try {
-                if (this.sampleAddress == null) {
-                    this.sampleAddress = new Reserva();
+                if (this.ReservaS == null) {
+                    this.ReservaS = new Reserva();
+		            this.ReservaS.setTicket(ticket.getValue());
+		            this.ReservaS.setPreciototal(Double.parseDouble(precioTotal.getValue()));
+		            this.ReservaS.setIdhabitacion(idHabitacion.getValue());
+		            this.ReservaS.setIdcliente(idCliente.getValue());
+		            this.ReservaS.setFechainicio(fechaInicio.getValue().toString());
+		            this.ReservaS.setFechafinal(fechaFinal.getValue().toString());
+		            
+		            this.controlador.CrearReserva(ReservaS);
                 }
 
                 clearForm();
@@ -191,10 +200,14 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
         ticket.setPrefixComponent(VaadinIcon.TICKET.create());
         precioTotal = new TextField("precio total");
         precioTotal.setPrefixComponent(VaadinIcon.MONEY.create());
-        idHabitacion = new TextField("id habitacion");
+        idHabitacion = new ComboBox<>("id habitacion"); 
         idHabitacion.setPrefixComponent(VaadinIcon.HOME.create());
-        idCliente = new TextField("id Cliente");
+        
+        
+        idCliente = new ComboBox<>("id Cliente");
         idCliente.setPrefixComponent(VaadinIcon.USERS.create());
+        
+        
         fechaInicio = new DatePicker("fecha inicio");
         fechaInicio.setPrefixComponent(VaadinIcon.CALENDAR.create());
         fechaFinal = new DatePicker("fecha final");
@@ -229,6 +242,8 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
+
+        this.controlador.consultarReserva();
     }
 
     private void clearForm() {
@@ -236,7 +251,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
     }
 
     private void populateForm(Reserva value) {
-        this.sampleAddress = value;
+        this.ReservaS = value;
 
         if(value != null) {
         	ticket.setValue(value.getTicket());
@@ -262,6 +277,12 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 	@Override
 	public void mostrarMensajeError(String mensaje) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mostrarMensajeExito(String mensaje) {
+		Notification.show(mensaje);	
 		
 	}
 }

@@ -1,5 +1,7 @@
 package hn.uth.controller;
 
+import hn.uth.data.Cliente;
+import hn.uth.data.Habitacion;
 import hn.uth.data.HabitacionResponse;
 import hn.uth.model.DatabaseRepositoryImpl;
 import hn.uth.views.habitacion.ViewModelHabitacion;
@@ -25,6 +27,22 @@ public class InteractorImplHabitacion implements InteractorHabitacion{
 				
 			}else {
 				this.vista.mostrarHabitacionEnGrid(respuesta.getItems());;
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void CrearHabitacion(Habitacion nuevo) {
+		try {
+			boolean creado = this.modelo.CrearHabitacion(nuevo);
+			if(creado == true) {
+				this.vista.mostrarMensajeExito("Habitacion creada exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al crear la habitacion");
 			}
 			
 		}catch (Exception error) {

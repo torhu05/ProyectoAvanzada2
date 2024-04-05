@@ -8,4 +8,5 @@ public interface ViewModelReserva {
 
 	void mostrarReservaEnGrid(List<Reserva> items);
 	void mostrarMensajeError(String mensaje);
+	void mostrarMensajeExito(String mensaje);
 }
