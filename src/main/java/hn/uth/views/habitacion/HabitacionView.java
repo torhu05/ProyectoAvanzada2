@@ -124,10 +124,21 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
 		            this.HabitacionS.setTipohabitacion(tipohabitacion.getValue());
 		            
 		            this.controlador.CrearHabitacion(HabitacionS);
+		            
+                } else {
+                	
+                	this.HabitacionS.setNumerohabitacion(numerohabitacion.getValue());
+		            this.HabitacionS.setOcupacion(ocupacion.getValue());
+		            this.HabitacionS.setPrecio(Double.parseDouble(precio.getValue()));
+		            this.HabitacionS.setTipohabitacion(tipohabitacion.getValue());
+		            
+		            this.controlador.ActualizarHabitacion(HabitacionS);
+                	
+                	
                 }
                 clearForm();
                 refreshGrid();
-                Notification.show("Data updated");
+                //Notification.show("Data updated");
                 UI.getCurrent().navigate(HabitacionView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(

@@ -138,14 +138,25 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
                     this.ClienteSeleccionado.setSexo(sexo.getValue());
                     this.ClienteSeleccionado.setNacionalidad(nacionalidad.getValue());
                     this.ClienteSeleccionado.setLugarprocedencia(lugarProcedencia.getValue());
+                    
                     this.controlador.CrearCliente(ClienteSeleccionado);
                 }else {
-                	
+                	this.ClienteSeleccionado.setIdentidad(identidad.getValue());
+                    this.ClienteSeleccionado.setNombre(nombre.getValue());
+                    this.ClienteSeleccionado.setApellido(apellido.getValue());
+                    this.ClienteSeleccionado.setCorreo(correo.getValue());
+                    this.ClienteSeleccionado.setTelefono(telefono.getValue());
+                    this.ClienteSeleccionado.setFechacumpleanos(fechacumpleanos.getValue().toString());
+                    this.ClienteSeleccionado.setSexo(sexo.getValue());
+                    this.ClienteSeleccionado.setNacionalidad(nacionalidad.getValue());
+                    this.ClienteSeleccionado.setLugarprocedencia(lugarProcedencia.getValue());
+                    
+                    this.controlador.ActualizarCliente(ClienteSeleccionado);
                 }
 
                 clearForm();
                 refreshGrid();
-                Notification.show("Data updated");
+                //Notification.show("Data updated");
                 UI.getCurrent().navigate(ClienteView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(

@@ -49,6 +49,22 @@ public class InteractorImplHabitacion implements InteractorHabitacion{
 			error.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void ActualizarHabitacion(Habitacion cambiar) {
+		try {
+			boolean creado = this.modelo.ActualizarHabitacion(cambiar);
+			if(creado == true) {
+				this.vista.mostrarMensajeExito("Habitacion modificada exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al modificar la habitacion");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 
 	
 }

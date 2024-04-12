@@ -38,7 +38,7 @@ public class InteractorImplReserva implements InteractorReserva{
 		try {
 			boolean creado = this.modelo.CrearReserva(nuevo);
 			if(creado == true) {
-				this.vista.mostrarMensajeExito("Habitacion creada exitosamente");
+				this.vista.mostrarMensajeExito("Reserva creada exitosamente");
 				
 			}else {
 				this.vista.mostrarMensajeError("Error al crear la habitacion");
@@ -49,4 +49,19 @@ public class InteractorImplReserva implements InteractorReserva{
 		}
 	}
 	
+	@Override
+	public void ActualizarReserva(Reserva cambiar) {
+		try {
+			boolean creado = this.modelo.ActualizarReserva(cambiar);
+			if(creado == true) {
+				this.vista.mostrarMensajeExito("Reserva modificada exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al modificar reserva");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 }

@@ -85,4 +85,22 @@ public class DatabaseRepositoryImpl {
 		return response.isSuccessful();
 	}
 	
+	public boolean ActualizarCliente(Cliente cambiar) throws IOException {
+		Call<ResponseBody> call = client.getDB().ActualizarCliente(cambiar);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean ActualizarHabitacion(Habitacion cambiar) throws IOException {
+		Call<ResponseBody> call = client.getDB().ActualizarHabitacion(cambiar);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean ActualizarReserva(Reserva cambiar) throws IOException {
+		Call<ResponseBody> call = client.getDB().ActualizarReserva(cambiar);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
 }

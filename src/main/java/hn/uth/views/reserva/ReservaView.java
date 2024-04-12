@@ -134,11 +134,22 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 		            this.ReservaS.setFechafinal(fechaFinal.getValue().toString());
 		            
 		            this.controlador.CrearReserva(ReservaS);
+		            
+                }else {
+                	
+                	this.ReservaS.setTicket(ticket.getValue());
+		            this.ReservaS.setPreciototal(Double.parseDouble(precioTotal.getValue()));
+		            this.ReservaS.setIdhabitacion(idHabitacion.getValue());
+		            this.ReservaS.setIdcliente(idCliente.getValue());
+		            this.ReservaS.setFechainicio(fechaInicio.getValue().toString());
+		            this.ReservaS.setFechafinal(fechaFinal.getValue().toString());
+		            
+		            this.controlador.ActualizarReserva(ReservaS);
                 }
 
                 clearForm();
                 refreshGrid();
-                Notification.show("Data updated");
+               // Notification.show("Data updated");
                 UI.getCurrent().navigate(ReservaView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(

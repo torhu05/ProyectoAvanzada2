@@ -12,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface DatabaseRepository {
 	
@@ -56,6 +57,27 @@ public interface DatabaseRepository {
 	})
 	@POST("/pls/apex/torhu90/sgh/reserva")
 	Call<ResponseBody> CrearReserva(@Body Reserva nuevo);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@PUT("/pls/apex/torhu90/sgh/cliente")
+	Call<ResponseBody> ActualizarCliente(@Body Cliente cambiar);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@PUT("/pls/apex/torhu90/sgh/habitacion")
+	Call<ResponseBody> ActualizarHabitacion(@Body Habitacion cambiar);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@PUT("/pls/apex/torhu90/sgh/reserva")
+	Call<ResponseBody> ActualizarReserva(@Body Reserva cambiar);
 
 }
 

@@ -46,5 +46,21 @@ public class InteractorImplCliente implements InteractorCliente{
 			error.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void ActualizarCliente(Cliente cambiar) {
+		try {
+			boolean creado = this.modelo.ActualizarCliente(cambiar);
+			if(creado == true) {
+				this.vista.mostrarMensajeExito("Cliente modificado exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al modificar el cliente");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 
 }
