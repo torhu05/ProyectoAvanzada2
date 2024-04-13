@@ -103,4 +103,19 @@ public class DatabaseRepositoryImpl {
 		return response.isSuccessful();
 	}
 	
+	public boolean EliminarCliente(String id) throws IOException {
+		Call<ResponseBody> call = client.getDB().EliminarCliente(id);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	public boolean EliminarHabitacion(String id) throws IOException {
+		Call<ResponseBody> call = client.getDB().EliminarHabitacion(id);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	public boolean EliminarReserva(String id) throws IOException {
+		Call<ResponseBody> call = client.getDB().EliminarReserva(id);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
 }

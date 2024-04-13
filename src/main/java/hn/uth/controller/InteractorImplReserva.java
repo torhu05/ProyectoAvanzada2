@@ -64,4 +64,21 @@ public class InteractorImplReserva implements InteractorReserva{
 			error.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void EliminarReserva(String id) {
+		try {
+			boolean Eliminado = this.modelo.EliminarReserva(id);
+			if(Eliminado == true) {
+				this.vista.mostrarMensajeExito("Reserva Borrada exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al Borrar la Reserva");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
+
 }

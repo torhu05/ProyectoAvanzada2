@@ -8,4 +8,5 @@ public interface InteractorHabitacion {
 	void consultarHabitacion();
 	void CrearHabitacion(Habitacion nuevo);
 	void ActualizarHabitacion(Habitacion cambiar);
+	void EliminarHabitacion(String id);
 }

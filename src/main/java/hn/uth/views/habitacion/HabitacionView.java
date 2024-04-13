@@ -39,6 +39,8 @@ import hn.uth.data.Reserva;
 import hn.uth.data.Cliente;
 import hn.uth.data.Habitacion;
 import hn.uth.views.MainLayout;
+import hn.uth.views.cliente.ClienteView;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -147,6 +149,20 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             } 
         });
+        
+        delete.addClickListener(e -> {
+        	if(this.HabitacionS == null) {
+        		mostrarMensajeError("seleccione una Habitacion para poder eliminar");
+        	}else {
+        		this.controlador.EliminarHabitacion(HabitacionS.getNumerohabitacion());
+        		clearForm();
+                refreshGrid();
+                UI.getCurrent().navigate(HabitacionView.class);
+        	}
+        	
+        	
+        });
+        
     }
 
     @Override

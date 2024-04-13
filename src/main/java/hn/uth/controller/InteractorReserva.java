@@ -8,4 +8,5 @@ public interface InteractorReserva {
 	void consultarReserva();
 	void CrearReserva(Reserva nuevo);
 	void ActualizarReserva(Reserva cambiar);
+	void EliminarReserva(String id);
 }

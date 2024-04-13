@@ -62,5 +62,21 @@ public class InteractorImplCliente implements InteractorCliente{
 			error.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void EliminarCliente(String id) {
+		try {
+			boolean Eliminado = this.modelo.EliminarCliente(id);
+			if(Eliminado == true) {
+				this.vista.mostrarMensajeExito("Cliente Borrado exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al Borrar el cliente");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 
 }

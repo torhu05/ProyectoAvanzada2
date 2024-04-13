@@ -31,6 +31,7 @@ import hn.uth.data.Reserva;
 import hn.uth.data.Habitacion;
 import hn.uth.data.Cliente;
 import hn.uth.views.MainLayout;
+import hn.uth.views.habitacion.HabitacionView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -157,6 +158,19 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             } 
+        });
+        
+        eliminar.addClickListener(e -> {
+        	if(this.ReservaS == null) {
+        		mostrarMensajeError("seleccione una Habitacion para poder eliminar");
+        	}else {
+        		this.controlador.EliminarReserva(ReservaS.getTicket());
+        		clearForm();
+                refreshGrid();
+                UI.getCurrent().navigate(ReservaView.class);
+        	}
+        	
+        	
         });
     }
 

@@ -9,10 +9,12 @@ import hn.uth.data.ReservaResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface DatabaseRepository {
 	
@@ -78,6 +80,27 @@ public interface DatabaseRepository {
 	})
 	@PUT("/pls/apex/torhu90/sgh/reserva")
 	Call<ResponseBody> ActualizarReserva(@Body Reserva cambiar);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@DELETE("/pls/apex/torhu90/sgh/cliente")
+	Call<ResponseBody> EliminarCliente(@Query("identidad") String identidad);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@DELETE("/pls/apex/torhu90/sgh/habitacion")	
+	Call<ResponseBody> EliminarHabitacion(@Query("numerohabitacion") String numerohabitacion);
+	
+	@Headers({
+		"Accept: application/json",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@DELETE("/pls/apex/torhu90/sgh/reserva")
+	Call<ResponseBody> EliminarReserva(@Query("ticket") String ticket);
 
 }
 

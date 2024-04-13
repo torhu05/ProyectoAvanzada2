@@ -7,4 +7,5 @@ public interface InteractorCliente {
 	void consultarCliente();
 	void CrearCliente(Cliente nuevo);
 	void ActualizarCliente(Cliente cambiar);
+	void EliminarCliente(String id);
 }

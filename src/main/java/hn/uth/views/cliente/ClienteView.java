@@ -171,16 +171,18 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         });
         
         eliminar.addClickListener(e -> {
-        	Notification n = Notification.show("Boton eliminar seleccionado");
-        	n.setPosition(Position.MIDDLE);
-            n.addThemeVariants(NotificationVariant.LUMO_WARNING);
-
+        	if(this.ClienteSeleccionado == null) {
+        		mostrarMensajeError("seleccione un cliente para poder eliminar");
+        	}else {
+        		this.controlador.EliminarCliente(ClienteSeleccionado.getIdentidad());
+        		clearForm();
+                refreshGrid();
+                UI.getCurrent().navigate(ClienteView.class);
+        	}
+        	
+        	
         });
-       eliminar.addClickListener ( e-> {
-       Notification n = Notification.show( "Botor eliminar seleccionado, aun no hay nada que eliminar");
-       n.setPosition(Position.MIDDLE);
-       n.addThemeVariants(NotificationVariant.LUMO_WARNING);
-    });
+       
     } 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -283,7 +285,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
 
     private void populateForm(Cliente value) {
 
-        this.samplePerson = value;
+        this.ClienteSeleccionado = value;
        if(value != null) {
     	   identidad.setValue(value.getIdentidad());
     	   nombre.setValue(value.getNombre());

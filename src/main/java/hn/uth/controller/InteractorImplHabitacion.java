@@ -65,6 +65,22 @@ public class InteractorImplHabitacion implements InteractorHabitacion{
 			error.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void EliminarHabitacion(String id) {
+		try {
+			boolean Eliminado = this.modelo.EliminarHabitacion(id);
+			if(Eliminado == true) {
+				this.vista.mostrarMensajeExito("Habitacion Borrada exitosamente");
+				
+			}else {
+				this.vista.mostrarMensajeError("Error al Borrar la Habitacion");
+			}
+			
+		}catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 
 	
 }
