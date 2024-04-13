@@ -90,12 +90,12 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
         // Configure Grid
 
-        grid.addColumn("ticket").setAutoWidth(true);
-        grid.addColumn("preciototal").setAutoWidth(true);
-        grid.addColumn("idhabitacion").setAutoWidth(true);
-        grid.addColumn("idcliente").setAutoWidth(true);
-        grid.addColumn("fechainicio").setAutoWidth(true);
-        grid.addColumn("fechafinal").setAutoWidth(true);
+        grid.addColumn("ticket").setAutoWidth(true).setHeader("Ticket");
+        grid.addColumn("preciototal").setAutoWidth(true).setHeader("Precio Total");
+        grid.addColumn("idhabitacion").setAutoWidth(true).setHeader("Numero Habitacion");
+        grid.addColumn("idcliente").setAutoWidth(true).setHeader("Id Cliente");
+        grid.addColumn("fechainicio").setAutoWidth(true).setHeader("Fecha de Inicio");
+        grid.addColumn("fechafinal").setAutoWidth(true).setHeader("Fecha Final");
         
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -220,17 +220,17 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        ticket = new TextField("ticket");
+        ticket = new TextField("Ticket");
         ticket.setPrefixComponent(VaadinIcon.TICKET.create());
-        precioTotal = new TextField("precio total");
+        precioTotal = new TextField("Precio Total");
         precioTotal.setPrefixComponent(VaadinIcon.MONEY.create());
-        idHabitacion = new TextField("id habitacion");
+        idHabitacion = new TextField("Numero Habitacion");
         idHabitacion.setPrefixComponent(VaadinIcon.HOME.create());
-        idCliente = new TextField("id Cliente");
+        idCliente = new TextField("Id Cliente");
         idCliente.setPrefixComponent(VaadinIcon.USERS.create());
-        fechaInicio = new DatePicker("fecha inicio");
+        fechaInicio = new DatePicker("Fecha Inicio");
         fechaInicio.setPrefixComponent(VaadinIcon.CALENDAR.create());
-        fechaFinal = new DatePicker("fecha final");
+        fechaFinal = new DatePicker("Fecha Final");
         fechaFinal.setPrefixComponent(VaadinIcon.CALENDAR.create());
         formLayout.add(ticket, precioTotal, idHabitacion, idCliente, fechaInicio, fechaFinal);
 
@@ -279,6 +279,11 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
         	idHabitacion.setValue(value.getIdhabitacion());
         	idCliente.setValue(value.getIdcliente());        	
         	
+        }else {
+        	ticket.setValue("");
+        	precioTotal.setValue("");
+        	idHabitacion.setValue("");
+        	idCliente.setValue("");  
         }
     }
 

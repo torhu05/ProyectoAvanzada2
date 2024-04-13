@@ -92,10 +92,10 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
 
         add(splitLayout);
 
-        grid.addColumn("numerohabitacion").setAutoWidth(true);
-        grid.addColumn("ocupacion").setAutoWidth(true);
-        grid.addColumn("precio").setAutoWidth(true);
-        grid.addColumn("tipohabitacion").setAutoWidth(true);
+        grid.addColumn("numerohabitacion").setAutoWidth(true).setHeader("Numero de Habitacion");
+        grid.addColumn("ocupacion").setAutoWidth(true).setHeader("Ocupacion");
+        grid.addColumn("precio").setAutoWidth(true).setHeader("Precio");
+        grid.addColumn("tipohabitacion").setAutoWidth(true).setHeader("Tipo de Habitacion");
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
@@ -286,6 +286,11 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
         	ocupacion.setValue(value.getOcupacion());
         	precio.setValue(Double.toString(value.getPrecio()));
         	tipohabitacion.setValue(value.getTipohabitacion());
+        }else {
+        	numerohabitacion.setValue("");
+        	ocupacion.setValue("");
+        	precio.setValue("");
+        	tipohabitacion.setValue("");
         }
        
     }

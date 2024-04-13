@@ -95,15 +95,15 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("identidad").setAutoWidth(true);
-        grid.addColumn("nombre").setAutoWidth(true);
-        grid.addColumn("apellido").setAutoWidth(true);
-        grid.addColumn("correo").setAutoWidth(true);
-        grid.addColumn("telefono").setAutoWidth(true);
-        grid.addColumn("fechacumpleanos").setAutoWidth(true);
-        grid.addColumn("sexo").setAutoWidth(true);
-        grid.addColumn("nacionalidad").setAutoWidth(true);
-        grid.addColumn("lugarprocedencia").setAutoWidth(true);
+        grid.addColumn("identidad").setAutoWidth(true).setHeader("Identidad");
+        grid.addColumn("nombre").setAutoWidth(true).setHeader("Nombre");
+        grid.addColumn("apellido").setAutoWidth(true).setHeader("Apellido");
+        grid.addColumn("correo").setAutoWidth(true).setHeader("Correo");
+        grid.addColumn("telefono").setAutoWidth(true).setHeader("Telefono");
+        grid.addColumn("fechacumpleanos").setAutoWidth(true).setHeader("Fecha de Cumpleaños");
+        grid.addColumn("sexo").setAutoWidth(true).setHeader("Sexo");
+        grid.addColumn("nacionalidad").setAutoWidth(true).setHeader("Nacionalidad");
+        grid.addColumn("lugarprocedencia").setAutoWidth(true).setHeader("Lugar de Procedencia");
         
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
@@ -295,7 +295,16 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
     	   sexo.setValue(value.getSexo());
     	   nacionalidad.setValue(value.getNacionalidad());
     	   lugarProcedencia.setValue(value.getLugarprocedencia());   
-       }     
+       }else {
+    	   identidad.setValue("");
+    	   nombre.setValue("");
+    	   apellido.setValue("");
+    	   correo.setValue("");
+    	   telefono.setValue("");
+    	   sexo.setValue("");
+    	   nacionalidad.setValue("");
+    	   lugarProcedencia.setValue(""); 
+       }
 
 
     }
