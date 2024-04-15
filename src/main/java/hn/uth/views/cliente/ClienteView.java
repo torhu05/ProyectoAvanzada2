@@ -226,9 +226,9 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        identidad = new TextField("identidad");
+        identidad = new TextField("Identidad");
         identidad.setPrefixComponent(VaadinIcon.USER_CHECK.create());        
-        nombre = new TextField("nombre");
+        nombre = new TextField("Nombre");
         nombre.setPrefixComponent(VaadinIcon.USER_CARD.create());
         apellido = new TextField("Apellido");
         apellido.setPrefixComponent(VaadinIcon.USER_CARD.create());
@@ -236,7 +236,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         correo.setPrefixComponent(VaadinIcon.AT.create());
         telefono = new TextField("Telefono");
         telefono.setPrefixComponent(VaadinIcon.PHONE.create());
-        fechacumpleanos = new DatePicker("Fecha Cumpleanos");
+        fechacumpleanos = new DatePicker("Fecha Cumpleaños");
         fechacumpleanos.setPrefixComponent(VaadinIcon.DATE_INPUT.create());
         sexo = new ComboBox<>("Sexo");
         sexo.setPrefixComponent(VaadinIcon.FAMILY.create());
