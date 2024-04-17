@@ -138,6 +138,8 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
                 	
                 	
                 }
+                
+                
                 clearForm();
                 refreshGrid();
                 //Notification.show("Data updated");
@@ -152,7 +154,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
         
         delete.addClickListener(e -> {
         	if(this.HabitacionS == null) {
-        		mostrarMensajeError("seleccione una Habitacion para poder eliminar");
+        		mostrarMensajeError("Seleccione una habitacion para poder eliminar");
         	}else {
         		this.controlador.EliminarHabitacion(HabitacionS.getNumerohabitacion());
         		clearForm();
@@ -173,8 +175,9 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
             if (habitacionObtenida!=null) {
                 populateForm(habitacionObtenida);
             } else {
-                Notification.show(String.format("El empleado con identidad = %s no existe", sampleBookId.get()),
-                        3000, Notification.Position.BOTTOM_START);
+            	Notification.show(
+            	String.format("Cliente con identidad %s no existe", sampleBookId.get()), 3000, 
+            	Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
@@ -306,7 +309,7 @@ public class HabitacionView extends Div implements BeforeEnterObserver, ViewMode
 
 	@Override
 	public void mostrarMensajeError(String mensaje) {
-		// TODO Auto-generated method stub
+		Notification.show(mensaje);	
 		
 	}
 	

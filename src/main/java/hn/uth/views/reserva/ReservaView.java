@@ -73,106 +73,99 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
   
 
 
-    public ReservaView() {
+	public ReservaView() {
 
-        addClassNames("reserva-view");
-        
-        controlador = new InteractorImplReserva(this);
-        elementos = new ArrayList<>();
+		addClassNames("reserva-view");
 
-        // Create UI
-        SplitLayout splitLayout = new SplitLayout();
+		controlador = new InteractorImplReserva(this);
+		elementos = new ArrayList<>();
 
-        createGridLayout(splitLayout);
-        createEditorLayout(splitLayout);
+		// Create UI
+		SplitLayout splitLayout = new SplitLayout();
 
-        add(splitLayout);
+		createGridLayout(splitLayout);
+		createEditorLayout(splitLayout);
 
-        // Configure Grid
+		add(splitLayout);
 
-        grid.addColumn("ticket").setAutoWidth(true).setHeader("Ticket");
-        grid.addColumn("preciototal").setAutoWidth(true).setHeader("Precio Total");
-        grid.addColumn("idhabitacion").setAutoWidth(true).setHeader("Numero Habitacion");
-        grid.addColumn("idcliente").setAutoWidth(true).setHeader("Id Cliente");
-        grid.addColumn("fechainicio").setAutoWidth(true).setHeader("Fecha de Inicio");
-        grid.addColumn("fechafinal").setAutoWidth(true).setHeader("Fecha Final");
-        
+		// Configure Grid
 
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+		grid.addColumn("ticket").setAutoWidth(true).setHeader("Ticket");
+		grid.addColumn("preciototal").setAutoWidth(true).setHeader("Precio Total");
+		grid.addColumn("idhabitacion").setAutoWidth(true).setHeader("Numero Habitacion");
+		grid.addColumn("idcliente").setAutoWidth(true).setHeader("Id Cliente");
+		grid.addColumn("fechainicio").setAutoWidth(true).setHeader("Fecha de Inicio");
+		grid.addColumn("fechafinal").setAutoWidth(true).setHeader("Fecha Final");
 
+		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
-        // when a row is selected or deselected, populate form
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(SAMPLEADDRESS_EDIT_ROUTE_TEMPLATE, event.getValue().getTicket()));
-            } else {
-                clearForm();
-                UI.getCurrent().navigate(ReservaView.class);
-            }
-        });
+		// when a row is selected or deselected, populate form
+		grid.asSingleSelect().addValueChangeListener(event -> {
+			if (event.getValue() != null) {
+				UI.getCurrent()
+						.navigate(String.format(SAMPLEADDRESS_EDIT_ROUTE_TEMPLATE, event.getValue().getTicket()));
+			} else {
+				clearForm();
+				UI.getCurrent().navigate(ReservaView.class);
+			}
+		});
 
+		controlador.consultarReserva();
 
-        controlador.consultarReserva();
+		cancel.addClickListener(e -> {
+			clearForm();
+			refreshGrid();
+		});
 
-        cancel.addClickListener(e -> {
-            clearForm();
-            refreshGrid();
-        });
+		save.addClickListener(e -> {
+			try {
+				if (this.ReservaS == null) {
+					this.ReservaS = new Reserva();
+					this.ReservaS.setTicket(ticket.getValue());
+					this.ReservaS.setPreciototal(Double.parseDouble(precioTotal.getValue()));
+					this.ReservaS.setIdhabitacion(idHabitacion.getValue());
+					this.ReservaS.setIdcliente(idCliente.getValue());
+					this.ReservaS.setFechainicio(fechaInicio.getValue().toString());
+					this.ReservaS.setFechafinal(fechaFinal.getValue().toString());
 
+					this.controlador.CrearReserva(ReservaS);
 
-      
-            
+				} else {
 
-        save.addClickListener(e -> {
-            try {
-                if (this.ReservaS == null) {
-                    this.ReservaS = new Reserva();
-		            this.ReservaS.setTicket(ticket.getValue());
-		            this.ReservaS.setPreciototal(Double.parseDouble(precioTotal.getValue()));
-		            this.ReservaS.setIdhabitacion(idHabitacion.getValue());
-		            this.ReservaS.setIdcliente(idCliente.getValue());
-		            this.ReservaS.setFechainicio(fechaInicio.getValue().toString());
-		            this.ReservaS.setFechafinal(fechaFinal.getValue().toString());
-		            
-		            this.controlador.CrearReserva(ReservaS);
-		            
-                }else {
-                	
-                	this.ReservaS.setTicket(ticket.getValue());
-		            this.ReservaS.setPreciototal(Double.parseDouble(precioTotal.getValue()));
-		            this.ReservaS.setIdhabitacion(idHabitacion.getValue());
-		            this.ReservaS.setIdcliente(idCliente.getValue());
-		            this.ReservaS.setFechainicio(fechaInicio.getValue().toString());
-		            this.ReservaS.setFechafinal(fechaFinal.getValue().toString());
-		            
-		            this.controlador.ActualizarReserva(ReservaS);
-                }
+					this.ReservaS.setTicket(ticket.getValue());
+					this.ReservaS.setPreciototal(Double.parseDouble(precioTotal.getValue()));
+					this.ReservaS.setIdhabitacion(idHabitacion.getValue());
+					this.ReservaS.setIdcliente(idCliente.getValue());
+					this.ReservaS.setFechainicio(fechaInicio.getValue().toString());
+					this.ReservaS.setFechafinal(fechaFinal.getValue().toString());
 
-                clearForm();
-                refreshGrid();
-               // Notification.show("Data updated");
-                UI.getCurrent().navigate(ReservaView.class);
-            } catch (ObjectOptimisticLockingFailureException exception) {
-                Notification n = Notification.show(
-                        "Error updating the data. Somebody else has updated the record while you were making changes.");
-                n.setPosition(Position.MIDDLE);
-                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } 
-        });
-        
-        eliminar.addClickListener(e -> {
-        	if(this.ReservaS == null) {
-        		mostrarMensajeError("seleccione una Habitacion para poder eliminar");
-        	}else {
-        		this.controlador.EliminarReserva(ReservaS.getTicket());
-        		clearForm();
-                refreshGrid();
-                UI.getCurrent().navigate(ReservaView.class);
-        	}
-        	
-        	
-        });
-    }
+					this.controlador.ActualizarReserva(ReservaS);
+				}
+
+				clearForm();
+				refreshGrid();
+				// Notification.show("Data updated");
+				UI.getCurrent().navigate(ReservaView.class);
+			} catch (ObjectOptimisticLockingFailureException exception) {
+				Notification n = Notification.show(
+						"Error updating the data. Somebody else has updated the record while you were making changes.");
+				n.setPosition(Position.MIDDLE);
+				n.addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+			}
+		});
+
+		eliminar.addClickListener(e -> {
+			if (this.ReservaS == null) {
+				mostrarMensajeError("Seleccione una reserva para poder eliminar");
+			} else {
+				this.controlador.EliminarReserva(ReservaS.getTicket());
+				clearForm();
+				refreshGrid();
+				UI.getCurrent().navigate(ReservaView.class);
+			}
+
+		});
+	}
 
 
     @Override
@@ -301,7 +294,7 @@ public class ReservaView extends Div implements BeforeEnterObserver, ViewModelRe
 
 	@Override
 	public void mostrarMensajeError(String mensaje) {
-		// TODO Auto-generated method stub
+		Notification.show(mensaje);	
 		
 	}
 	

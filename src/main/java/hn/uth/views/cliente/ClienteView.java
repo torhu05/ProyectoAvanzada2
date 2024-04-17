@@ -172,7 +172,7 @@ public class ClienteView extends Div implements BeforeEnterObserver, ViewModelCl
         
         eliminar.addClickListener(e -> {
         	if(this.ClienteSeleccionado == null) {
-        		mostrarMensajeError("seleccione un cliente para poder eliminar");
+        		mostrarMensajeError("Seleccione un cliente para poder eliminar");
         	}else {
         		this.controlador.EliminarCliente(ClienteSeleccionado.getIdentidad());
         		clearForm();
